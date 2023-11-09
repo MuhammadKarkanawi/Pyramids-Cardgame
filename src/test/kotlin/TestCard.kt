@@ -1,7 +1,6 @@
 import entity.Card
 import entity.CardSuit
 import entity.CardValue
-import entity.Pyramid
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -14,9 +13,9 @@ class TestCard {
 
 // Testdaten erzeugen
 
-        var CardSuit :CardSuit =CardSuit.SPADES
-        var CardValue : CardValue=CardValue.TWO
-        var isRevealed : Boolean= false
+        val CardSuit :CardSuit =CardSuit.SPADES
+        val CardValue : CardValue=CardValue.TWO
+        val isRevealed : Boolean = false
         // Zu testende Methode mit Testdaten aufrufen
         var createdCard :Card= Card (suit = CardSuit, value = CardValue)
 

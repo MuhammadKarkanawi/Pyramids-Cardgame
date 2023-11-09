@@ -6,7 +6,12 @@ package entity
 * @property value The value of the card (e.g. two, three..)
 */
 data class Card(val suit: CardSuit, val value: CardValue) {
+  val typ :CardSuit=suit
+
+  val wert:CardValue= value
+
   var isRevealed : Boolean= false
-  override fun toString() = "$suit$value"
+  fun getSuit():CardSuit{return typ}
+  override fun toString():String = "$suit$value"
 }
 

@@ -1,14 +1,14 @@
 package entity
-
+import entity.*
 class CardStack () {
 
 
-    private val cards: ArrayDeque<Card> = ArrayDeque(24)
+    val drawStack : MutableList<Card?> = mutableListOf()
+    val reserveStack : MutableList<Card?> = mutableListOf()
+    var sizeDrawstack: Int = drawStack.size
 
-    val size: Int get() = cards.size
-
-
-    val empty: Boolean get() = cards.isEmpty()
-
+    fun getDrawStack():MutableList<Card?> {return this.drawStack}
+    fun getReserveStack(): MutableList<Card?>{return this.reserveStack}
+    fun isEmptyPullstack(): Boolean{return getDrawStack().isEmpty()}
 
 }
