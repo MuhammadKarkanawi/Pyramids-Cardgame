@@ -114,18 +114,13 @@ class PlayerActionService(val rootService:RootService):AbstractRefreshingService
             //player removes the first card from the stack
             drawStack.removeAt(0)
             //all cards in the reserve Stack get pushed to the right
-            increase length of reserveStack List by 1
-            for (i from length of reserveStack down to 1){
-                reserveStack[i] = reserveStack[i - 1]
-                //new card is put on top of reserveStack
-                reserveStack[0] = drawnCard
+            var reserveStack = pyramide.toReserveStack
+            reserveStack.add(0,drawnCard)
+
                 //reset Pass counter
-                Pyramide.opponentPassed = false
+                pyramide.opponentPassed = false
                 //change player
-                gameService.changePlayer()}}
-        onAllRefreshables{refreshAfterRevea}
+                rootService.gameService.changePlayer()}
+        onAllRefreshables{refreshAfterRevealCard()}
     }
-    //refresh view
-
-
 }
