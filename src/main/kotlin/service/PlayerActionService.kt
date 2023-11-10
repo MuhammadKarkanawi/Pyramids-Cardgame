@@ -53,7 +53,7 @@ class PlayerActionService(val rootService:RootService):AbstractRefreshingService
             //update opponentPassed Boolean
             onAllRefreshables { refreshAfterRemovePair(isValid) }
         }
-        var isEmpty =game.isEmpty()
+        var isEmpty =game.isEmpty(pyramide.newPyramid)
         //check if Pyramide.Pyramid entity has cards left and end game if not
         if (isEmpty) {
             game.endGame()

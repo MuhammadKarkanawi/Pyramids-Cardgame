@@ -48,11 +48,16 @@ class GameService(private val rootService: RootService) :AbstractRefreshingServi
         return sum == 15 && !(card1.value.toString() == "A" && card2.value.toString() == "A" )
     }
 
-    fun isEmpty(): Boolean {
+    fun isEmpty(pyramid: Pyramid): Boolean {
         val pyramide : Pyramide? = rootService.currentGame
         checkNotNull(pyramide)
-        val emptyPyramid = pyramide.cards.all { row -> row.all { it == null } }
-        return emptyPyramid
+
+        val ifEmptyPyramid = pyramide.newPyramid.cards
+            for(i in 0..6)
+                { if(!ifEmptyPyramid[i].isEmpty())
+                    {return false}
+                }
+        return true
     }
 
     fun endGame() {
