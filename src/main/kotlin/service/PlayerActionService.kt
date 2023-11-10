@@ -60,7 +60,7 @@ class PlayerActionService(val rootService:RootService):AbstractRefreshingService
             onAllRefreshables { refreshAfterEndGame() }
         } else {
             //Reveal any new cards that need to be revealed
-            game.flipCards(card1, card2)
+            game.flipCard()
             onAllRefreshables { refreshAfterRevealCard() }
             //change to next player
             game.changePlayer()
