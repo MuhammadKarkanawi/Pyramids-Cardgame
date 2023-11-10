@@ -2,6 +2,7 @@ package entity
 import entity.*
 class CardStack () {
 
+    var cards : MutableList<MutableList<Card?>> = mutableListOf()
 
     val drawStack : MutableList<Card?> = mutableListOf()
     val reserveStack : MutableList<Card?> = mutableListOf()

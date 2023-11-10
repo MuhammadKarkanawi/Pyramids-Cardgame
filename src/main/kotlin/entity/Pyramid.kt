@@ -4,5 +4,5 @@ package entity
  */
 class Pyramid() {
 
-    var cardsn : Array<Array<Card?>> = Array(7) { row -> Array(row + 1) { null }}
+    var cards : MutableList<MutableList<Card?>> = mutableListOf()
 }

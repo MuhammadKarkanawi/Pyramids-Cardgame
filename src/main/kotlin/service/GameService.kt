@@ -1,32 +1,57 @@
 package service
 
+import AbstractRefreshingService
 import entity.*
 
-class GameService(private val rootService: RootService) {
+class GameService(private val rootService: RootService) :AbstractRefreshingService() {
+
+
     val player1: Player = Player("playerOne")
     val player2: Player = Player("playerTwo")
-    var currentPlayer: Player = player1
-    var reserveStack: ArrayDeque<Card> = ArrayDeque(24)
+
+
     fun startGame() {
-        val player1 = Player("player1Name")
-        val player2 = Player("player2Name")
+        var pyramide = rootService.currentGame
+
+        checkNotNull(pyramide)
+
+        var playerListe :MutableList<Player> = pyramide.playerList
+
+        playerListe.add(0,player1)
+        playerListe.add(1,player2)
+
+        var reserveStack: MutableList<Card?> = pyramide.reserveStack
+
+        var drawStack : MutableList<Card?> = pyramide.drawStack
+
+        var createPyramid :Pyramid = pyramide.newPyramid
+
+        onAllRefreshables { refreshAfterStartGame() }
     }
 
     fun changePlayer() {
+        var pyramide = rootService.currentGame
+
+        checkNotNull(pyramide)
+
+        var currentPlayer : Player =pyramide.currentPlayer
         currentPlayer = if (currentPlayer == player1) player2 else player1
+
+        onAllRefreshables { refreshAfterChangePlayer() }
     }
 
     fun checkCardChoice(card1: Card, card2: Card): Boolean {
-        // Überprüfe, ob die Summe der Werte der beiden Karten 15 ergibt und sie nicht beide Asse sind
 
-        var sum = card1.value.toString() + card2.value.toString()
-        return sum.toInt() == 15 && !(card1.value.toString() == "ACE" && card2.value.toString() == "ACE")
+
+        // Überprüfe, ob die Summe der Werte der beiden Karten 15 ergibt und sie nicht beide Asse sind
+        var sum = card1.value.toInt() + card2.value.toInt()
+        return sum == 15 && !(card1.value.toString() == "A" && card2.value.toString() == "A" )
     }
 
     fun isEmpty(): Boolean {
-        val currentGame: Pyramide? = rootService.currentGame
-        checkNotNull(currentGame)
-        val emptyPyramid = currentGame.cards.all { row -> row.all { it == null } }
+        val pyramide : Pyramide? = rootService.currentGame
+        checkNotNull(pyramide)
+        val emptyPyramid = pyramide.cards.all { row -> row.all { it == null } }
         return emptyPyramid
     }
 
@@ -63,7 +88,7 @@ class GameService(private val rootService: RootService) {
         return Pyramid()
     }
 
-    fun flipCards(card: Card) {
+    fun flipCards(card1 : Card,card2: Card) {
         card.isRevealed = !card.isRevealed
     }
 }
