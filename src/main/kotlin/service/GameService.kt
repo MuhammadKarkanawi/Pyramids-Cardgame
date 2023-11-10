@@ -76,24 +76,75 @@ class GameService(private val rootService: RootService) :AbstractRefreshingServi
     private fun showResult() {
         println("Player1 : $(player1.getScore()) , Player2: $( player2.getScore())")
     }
-//erstellen & mischen vom decks
+    /**
+     * Distributes a set of cards for a new game.
+     */
     fun distributeCards(card: Card) {
-        var cardListe: ArrayDeque<Card> = ArrayDeque(52)
-        var newPyramid: Array<Array<Card?>> = Array(7) { row -> Array(row + 1) { card } }
-        newPyramid.shuffle()
-        var newStack: CardStack
+    val cards = defaultRandomCardList() // Get a shuffled list of 52 cards
+    val pyramide = rootService.currentGame
+    checkNotNull(pyramide)
+
+    createPyramid(cards.take(28))
+    pyramide.drawStack.addAll(cards.drop(28))
 
     }
+
+    /**
+     * Generates a shuffled list of 52 cards for a new game.
+     *
+     * @return A shuffled list of 52 cards.
+     */
+    private fun defaultRandomCardList(): List<Card> = List(52) { index ->
+        Card(
+            CardSuit.values()[index % 4],
+            CardValue.values()[index % 13 + 2]
+        )
+    }.shuffled()
 
     fun createDrawStack(): CardStack {
         return CardStack()
     }
 
-    fun createPyramid(): Pyramid {
-        return Pyramid()
+    private fun createPyramid(cards: List<Card>) {
+        val pyramide = rootService.currentGame
+        checkNotNull(pyramide)
+
+        var cardIndex = 0 // To keep track of which card from the list to use
+        for (row in 0 until 7) {
+            for (col in 0 until row + 1) {
+                if (cards.isNotEmpty()) {
+                    val card = cards[cardIndex++]
+                    if (col == 0 || col == row || row == 6) {
+                        card.isRevealed= true // Reveal the outer and bottom cards
+                    }
+                    pyramide.cards[row][col] = card
+                }
+            }
+        }
     }
 
-    fun flipCards(card1 : Card,card2: Card) {
-        card.isRevealed = !card.isRevealed
+    /**
+     * Reveals new outer cards in the pyramid after a card has been removed.
+     */
+    fun flipCard() {
+        val pyramide = rootService.currentGame
+        checkNotNull(pyramide)
+        val rows = pyramide.cards.size
+
+        for (row in 0 until rows) {
+            val firstUnrevealed = pyramide.cards[row].indexOfFirst { it != null && !it.isRevealed }
+            val lastUnrevealed = pyramide.cards[row].indexOfLast { it != null && !it.isRevealed }
+
+            if (firstUnrevealed != -1) {
+               var card = pyramide.cards[row][firstUnrevealed]
+                checkNotNull(card)
+                card.isRevealed=true
+            }
+            if (lastUnrevealed != -1 && lastUnrevealed != firstUnrevealed) {
+                var card = pyramide.cards[row][lastUnrevealed]
+                checkNotNull(card)
+                card.isRevealed = true
+            }
+        }
     }
 }
