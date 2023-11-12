@@ -1,5 +1,5 @@
 package entity
-import entity.*
+
 /**
  * represents a game of Pyramide.
  */
@@ -11,13 +11,17 @@ class Pyramide {
      */
     var opponentPassed : Boolean=false
 
-    //player list
+    /**player list*/
     var playerList: MutableList<Player> = mutableListOf()
 
-    /**
+    /** ülayerIndexfeststellen*/
+
+    var indexPlayer : Int =0
+
+     /**
      * Int value indicating the current player (1= Player1; 2=Player2)
      */
-    var currentPlayer : Player = playerList[0]
+    var currentPlayer : Player = playerList[indexPlayer]
 
     /**
      * a stack of cards indicating the drawStack
@@ -28,8 +32,8 @@ class Pyramide {
      */
     var reserveStack : MutableList<Card?>  =CardStack().reserveStack
 
-
-    var cards : MutableList<MutableList<Card?>> = mutableListOf()
+    /**cards from pyramid */
+    var cards : MutableList<MutableList<Card?>> =Pyramid().cards
 
     var newPyramid: Pyramid = Pyramid()
 

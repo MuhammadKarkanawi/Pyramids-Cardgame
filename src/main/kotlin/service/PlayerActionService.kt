@@ -4,11 +4,11 @@ import entity.*
 
 class PlayerActionService(val rootService:RootService):AbstractRefreshingService() {
     fun pass() {    //get current game from root service
-        var game = rootService.gameService
+        val game = rootService.gameService
         checkNotNull(game)
         //get opponentPassed Boolean
 
-        var pyramide = rootService.currentGame
+        val pyramide = rootService.currentGame
         checkNotNull(pyramide)
         var opponentPassed = pyramide.opponentPassed
         //end game if previous Player already chose Pass
@@ -26,11 +26,11 @@ class PlayerActionService(val rootService:RootService):AbstractRefreshingService
 
     fun removePair(card1: Card, card2: Card) {
         //get current game from rootService
-        var game = rootService.gameService
+        val game = rootService.gameService
         checkNotNull(game)
 
         //get current pyramide from rootService
-        var pyramide = rootService.currentGame
+        val pyramide = rootService.currentGame
         checkNotNull(pyramide)
 
         //check validity of choosen cards and save result
@@ -71,10 +71,10 @@ class PlayerActionService(val rootService:RootService):AbstractRefreshingService
 
     private fun removeCards(card1: Card, card2: Card) {
 
-        var pyramide = rootService.currentGame
+        val pyramide = rootService.currentGame
         checkNotNull(pyramide)
 
-        var game = rootService.gameService
+        val game = rootService.gameService
         checkNotNull(game)
 
         var pyramideCards: MutableList<MutableList<Card?>> = pyramide.cards
@@ -126,7 +126,8 @@ class PlayerActionService(val rootService:RootService):AbstractRefreshingService
 
     fun revealCard() {
         //get current game from root service
-        var pyramide = rootService.currentGame
+        val
+                pyramide = rootService.currentGame
         checkNotNull(pyramide)
 
         //get current player from root service

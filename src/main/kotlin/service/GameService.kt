@@ -29,13 +29,19 @@ class GameService(private val rootService: RootService) :AbstractRefreshingServi
         onAllRefreshables { refreshAfterStartGame() }
     }
 
-    fun changePlayer() {
+    fun changePlayer(): Player {
         var pyramide = rootService.currentGame
 
         checkNotNull(pyramide)
 
-        var currentPlayer : Player =pyramide.currentPlayer
-        currentPlayer = if (currentPlayer == player1) player2 else player1
+         if (pyramide.indexPlayer ==0 )
+        {  pyramide.indexPlayer =1
+        pyramide.currentPlayer = pyramide.playerList[pyramide.indexPlayer]
+            return pyramide.currentPlayer }
+
+         else{pyramide.indexPlayer =0
+        pyramide.currentPlayer =pyramide.playerList[pyramide.indexPlayer]
+        return pyramide.currentPlayer}
 
         onAllRefreshables { refreshAfterChangePlayer() }
     }
