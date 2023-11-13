@@ -1,3 +1,5 @@
+package entity
+
 import entity.*
 import kotlin.test.*
 

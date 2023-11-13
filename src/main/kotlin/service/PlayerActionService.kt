@@ -1,16 +1,21 @@
 package service
+
 import AbstractRefreshingService
 import entity.*
 
-class PlayerActionService(val rootService:RootService):AbstractRefreshingService() {
+class PlayerActionService(val rootService: RootService) : AbstractRefreshingService() {
     fun pass() {    //get current game from root service
+        // get current game from root service
         val game = rootService.gameService
         checkNotNull(game)
         //get opponentPassed Boolean
-
+        //get current pyramid from root service
         val pyramide = rootService.currentGame
         checkNotNull(pyramide)
+
+        //get opponentPass att from root service
         var opponentPassed = pyramide.opponentPassed
+
         //end game if previous Player already chose Pass
         if (opponentPassed) {
             game.endGame()
@@ -25,6 +30,7 @@ class PlayerActionService(val rootService:RootService):AbstractRefreshingService
     }
 
     fun removePair(card1: Card, card2: Card) {
+
         //get current game from rootService
         val game = rootService.gameService
         checkNotNull(game)
@@ -53,7 +59,8 @@ class PlayerActionService(val rootService:RootService):AbstractRefreshingService
             //update opponentPassed Boolean
             onAllRefreshables { refreshAfterRemovePair(isValid) }
         }
-        var isEmpty =game.isEmpty(pyramide.newPyramid)
+
+        var isEmpty = game.isEmpty()
         //check if Pyramide.Pyramid entity has cards left and end game if not
         if (isEmpty) {
             game.endGame()
@@ -81,7 +88,7 @@ class PlayerActionService(val rootService:RootService):AbstractRefreshingService
 
         //check validity of choosen cards and save result
         var isValid: Boolean = game.checkCardChoice(card1, card2)
-        var reserveStacksize : Int = pyramide.reserveStack.size
+        var reserveStacksize: Int = pyramide.reserveStack.size
         if (isValid) {
             if (reserveStacksize != 0) {
                 //if erste karte in reserveStack gefunden
@@ -125,45 +132,56 @@ class PlayerActionService(val rootService:RootService):AbstractRefreshingService
     }
 
     fun revealCard() {
-        //get current game from root service
-        val
-                pyramide = rootService.currentGame
+        //get current pyramid from root service
+        val pyramide = rootService.currentGame
         checkNotNull(pyramide)
 
-        //get current player from root service
-        var currentPlayer = pyramide.currentPlayer
+        //get current game from root service
+        val game= rootService.gameService
+        checkNotNull(game)
 
         //get DrawStack from root service
         var drawStack = pyramide.drawStack
         checkNotNull(drawStack)
+
+        //get reserve Stack from root service
+        var reserveStack = pyramide.reserveStack
+
+        checkNotNull(reserveStack)
+
         //check if DrawStack has at least one card
-        var drawStackSize: Int = pyramide.drawStack.size
+        var drawStackSize: Int = drawStack.size
 
         fun isValid(): Boolean {
             return drawStackSize != 0
         }
-
+        /**
+         * reveal card from draw stack and add it to reserve stack
+         */
         if (isValid()) {
             //player reveals the first card from the drawing stack
-            var drawnCard: Card? = drawStack[0]
-            checkNotNull(drawnCard)
+            var toDrawnCard: Card? = drawStack[0]
+            checkNotNull(toDrawnCard)
 
-            drawnCard.isRevealed = true
+            toDrawnCard.isRevealed = true
 
-            onAllRefreshables {
-                refreshAfterRevealCard()
+            //player removes the first card from the stack
+            drawStack.removeAt(0)
 
-                //player removes the first card from the stack
-                drawStack.removeAt(0)
-                //add drawn card to reserve stack, all cards in the reserve Stack get pushed to the right
-                var reserveStack = pyramide.reserveStack
-                reserveStack.add(0, drawnCard)
+            //add drawn card to reserve stack, all cards in the reserve Stack get pushed to the right
+            reserveStack.add(0, toDrawnCard)
 
-                //reset Pass counter
-                pyramide.opponentPassed = false
-                //change player
-                rootService.gameService.changePlayer()
-                onAllRefreshables { refreshAfterChangePlayer() }
+            //reset Pass counter
+            pyramide.opponentPassed = false
+
+            // refresh after reveal card
+            onAllRefreshables { refreshAfterRevealCard()
+
+            //change player
+            game.changePlayer()
+
+            //refresh after change player
+            onAllRefreshables { refreshAfterChangePlayer() }
             }
         }
     }

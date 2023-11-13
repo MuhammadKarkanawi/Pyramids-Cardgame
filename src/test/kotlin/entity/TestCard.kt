@@ -1,3 +1,5 @@
+package entity
+
 import entity.Card
 import entity.CardSuit
 import entity.CardValue

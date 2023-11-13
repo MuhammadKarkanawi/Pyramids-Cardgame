@@ -1,7 +1,6 @@
 package service
 import view.Refreshable
 import entity.*
-import service.*
 
 /**
  * Main class of the service layer for the Pyramid card game. Provides access
