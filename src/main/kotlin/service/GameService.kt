@@ -19,7 +19,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
 
         checkNotNull(pyramide)
 
-        var playerListe: MutableList<Player> = pyramide.playerList
+        val playerListe: MutableList<Player> = pyramide.playerList
 
         playerListe.add(0, player1)
         playerListe.add(1, player2)
@@ -30,7 +30,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
     }
 
     fun changePlayer(): Player {
-        var pyramide = rootService.currentGame
+        val pyramide = rootService.currentGame
 
         checkNotNull(pyramide)
 
@@ -44,14 +44,14 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
             return pyramide.currentPlayer
         }
 
-        onAllRefreshables { refreshAfterChangePlayer() }
+        onAllRefreshables { refreshAfterChangePlayer()}
     }
 
     fun checkCardChoice(card1: Card, card2: Card): Boolean {
 
 
         // Überprüfe, ob die Summe der Werte der beiden Karten 15 ergibt und sie nicht beide Asse sind
-        var sum = card1.value.toInt() + card2.value.toInt()
+        val sum = card1.value.toInt() + card2.value.toInt()
         return sum == 15 && !(card1.value.toString() == "A" && card2.value.toString() == "A")
     }
 
@@ -62,7 +62,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         val pyramide = rootService.currentGame
         checkNotNull(pyramide)
 
-        var pyramidCards = pyramide.cards
+        val pyramidCards = pyramide.cards
 
         checkNotNull(pyramidCards)
 
@@ -85,11 +85,11 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         println("GAME OVER")
         println("The Winner Is :")
         if (player1.score > player2.score) {
-            println(player1.getName())
+            println(player1.name)
         } else if (player1.score < player2.score) {
-            println(player2.getName())
+            println(player2.name)
         } else {
-            println(player1.getName() + player2.getName())
+            println(player1.name + player2.name)
         }
         showResult()
         onAllRefreshables { refreshAfterEndGame() }
@@ -100,7 +100,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
      * will show the results
      */
     private fun showResult() {
-        println("Player1 :" + player1.getScore() + "Player2:" + player2.getScore())
+        println("Player1 :" + player1.score + "Player2:" + player2.score)
     }
 
     /**
@@ -134,7 +134,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
     private fun createPyramid(cards: List<Card>) {
         val pyramide = rootService.currentGame
         checkNotNull(pyramide)
-        var pyramidCards = pyramide.cards
+        val pyramidCards = pyramide.cards
         var cardIndex = 0 // To keep track of which card from the list to use
         for (row in 0 until 7) {
             for (col in 0 until row + 1) {
