@@ -1,4 +1,3 @@
-package entity
 import entity.Player
 import kotlin.test.*
 class Playertest {

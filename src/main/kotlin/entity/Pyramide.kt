@@ -5,7 +5,6 @@ package entity
  */
 
 class Pyramide {
-
     /**
      * flag indicating whether an opponent passed the previous turn
      */
