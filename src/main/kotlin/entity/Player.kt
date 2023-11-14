@@ -15,5 +15,5 @@ class Player {
         this.score=0
        }
 
-    fun setScore(i:Int): Unit {this.score + i }
+  //  fun setScore(i:Int): Unit {this.score + i }
 }

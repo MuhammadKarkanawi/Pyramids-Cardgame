@@ -49,9 +49,9 @@ class PlayerActionService(val rootService: RootService) : AbstractRefreshingServ
         if (isValid) {
             //award points
             if (card1.value.toString() == "A" || card2.value.toString() == "A") {
-                player.setScore(1)
+                player.score++
             } else {
-                player.setScore(2)
+                player.score++
             }
 
             removeCards(card1, card2)
