@@ -15,8 +15,5 @@ class Player {
         this.score=0
        }
 
-    fun getName():String
-    {return this.name}
-    fun getScore():Int {return this.score}
     fun setScore(i:Int): Unit {this.score + i }
 }

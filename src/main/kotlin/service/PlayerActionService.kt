@@ -40,10 +40,10 @@ class PlayerActionService(val rootService: RootService) : AbstractRefreshingServ
         checkNotNull(pyramide)
 
         //check validity of choosen cards and save result
-        var isValid: Boolean = game.checkCardChoice(card1, card2)
+        val isValid: Boolean = game.checkCardChoice(card1, card2)
 
         //get current player
-        var player: Player = pyramide.currentPlayer
+        val player: Player = pyramide.currentPlayer
 
         //remove cards
         if (isValid) {
@@ -60,7 +60,7 @@ class PlayerActionService(val rootService: RootService) : AbstractRefreshingServ
             onAllRefreshables { refreshAfterRemovePair(isValid) }
         }
 
-        var isEmpty = game.isEmpty()
+        val isEmpty = game.isEmpty()
         //check if Pyramide.Pyramid entity has cards left and end game if not
         if (isEmpty) {
             game.endGame()
@@ -84,7 +84,7 @@ class PlayerActionService(val rootService: RootService) : AbstractRefreshingServ
         val game = rootService.gameService
         checkNotNull(game)
 
-        var pyramideCards: MutableList<MutableList<Card?>> = pyramide.cards
+        val pyramideCards: MutableList<MutableList<Card?>> = pyramide.cards
 
         //check validity of choosen cards and save result
         var isValid: Boolean = game.checkCardChoice(card1, card2)
