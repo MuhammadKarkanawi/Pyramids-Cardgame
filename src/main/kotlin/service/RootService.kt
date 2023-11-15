@@ -7,7 +7,7 @@ import entity.*
  * to all other service classes and holds the [currentGame] state for these
  * services to access.
  */
-class RootService(playerOne:Player,playerTwo:Player,pyramid:Pyramid) {
+class RootService() {
 
     val gameService = GameService(this)
     val playerActionService = PlayerActionService(this)

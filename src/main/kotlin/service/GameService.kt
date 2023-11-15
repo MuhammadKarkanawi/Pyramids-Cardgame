@@ -8,16 +8,19 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
     /**
      * two player initialiesed
      */
-    val player1: Player = Player("playerOne")
-    val player2: Player = Player("playerTwo")
+    var player1: Player = Player("")
+    var player2: Player = Player("")
 
     /**
      * this methode start and initialise a new game
      */
-    fun startGame() {
+    fun startGame(player1Name : String , player2Name : String) {
         val pyramide = rootService.currentGame
 
         checkNotNull(pyramide)
+
+        player1 = Player(player1Name)
+        player2 = Player(player2Name)
 
         val playerListe: MutableList<Player> = pyramide.playerList
 
@@ -99,7 +102,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
     /**
      * will show the results
      */
-    private fun showResult() {
+     fun showResult()  {
         println("Player1 :" + player1.score + "Player2:" + player2.score)
     }
 

@@ -35,6 +35,5 @@ class Pyramide {
     /**cards from pyramid */
     var cards: MutableList<MutableList<Card?>> = Pyramid().cards
 
-    var newPyramid: Pyramid = Pyramid()
 
 }
