@@ -1,4 +1,4 @@
-package tools.aqua.bgw.examples.war.view
+package view
 
 import tools.aqua.bgw.components.container.CardStack
 import tools.aqua.bgw.components.gamecomponentviews.CardView

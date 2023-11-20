@@ -8,7 +8,7 @@ class TestPyramid {
         @Test
         fun creatPyramidCaseOne () {
 // Testdaten erzeugen
-            val cards : Array<Array<Card?>> = Array(7) { row -> Array(row + 1) { null } }
+            val cards : MutableList<MutableList<Card?>> = mutableListOf()
 
             // Zu testende Methode mit Testdaten aufrufen
             val createdPyramid : Pyramid = Pyramid()

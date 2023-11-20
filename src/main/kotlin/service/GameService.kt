@@ -14,7 +14,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
     /**
      * this methode start and initialise a new game
      */
-    fun startGame(player1Name : String , player2Name : String) {
+    fun startGame(player1Name: String, player2Name: String) {
         val pyramide = rootService.currentGame
 
         checkNotNull(pyramide)
@@ -22,12 +22,13 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         player1 = Player(player1Name)
         player2 = Player(player2Name)
 
-        val playerListe: MutableList<Player> = pyramide.playerList
+        val playerListe: MutableList<Player> = mutableListOf()
 
         playerListe.add(0, player1)
         playerListe.add(1, player2)
 
-        distributeCards()
+        pyramide.playerList = playerListe
+        rootService.currentGame = distributeCards(pyramide)
 
         onAllRefreshables { refreshAfterStartGame() }
     }
@@ -40,14 +41,20 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         if (pyramide.indexPlayer == 0) {
             pyramide.indexPlayer = 1
             pyramide.currentPlayer = pyramide.playerList[pyramide.indexPlayer]
+
+            onAllRefreshables { refreshAfterChangePlayer() }
+
             return pyramide.currentPlayer
         } else {
             pyramide.indexPlayer = 0
             pyramide.currentPlayer = pyramide.playerList[pyramide.indexPlayer]
+
+            onAllRefreshables { refreshAfterChangePlayer() }
+
             return pyramide.currentPlayer
         }
 
-        onAllRefreshables { refreshAfterChangePlayer()}
+
     }
 
     fun checkCardChoice(card1: Card, card2: Card): Boolean {
@@ -55,7 +62,10 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
 
         // Überprüfe, ob die Summe der Werte der beiden Karten 15 ergibt und sie nicht beide Asse sind
         val sum = card1.value.toInt() + card2.value.toInt()
-        return sum == 15 && !(card1.value.toString() == "A" && card2.value.toString() == "A")
+
+      return   card1.value.toString() != "A" && card2.value.toString() == "A" ||
+               card1.value.toString() == "A" && card2.value.toString() != "A" ||
+               sum == 15
     }
 
     /**
@@ -84,16 +94,19 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
      * when the game ends will show the winner
      */
     fun endGame() {
+        val pyramide = rootService.currentGame
+        checkNotNull(pyramide)
 
         println("GAME OVER")
         println("The Winner Is :")
-        if (player1.score > player2.score) {
-            println(player1.name)
-        } else if (player1.score < player2.score) {
-            println(player2.name)
+        if (pyramide.playerList[0].score > pyramide.playerList[1].score) {
+            println(pyramide.playerList[0].name)
+        } else if (pyramide.playerList[0].score < pyramide.playerList[1].score) {
+            println(pyramide.playerList[1].name)
         } else {
-            println(player1.name + player2.name)
+            println(pyramide.playerList[0].name + pyramide.playerList[1].name)
         }
+
         showResult()
         onAllRefreshables { refreshAfterEndGame() }
 
@@ -102,20 +115,22 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
     /**
      * will show the results
      */
-     fun showResult()  {
+    fun showResult() {
         println("Player1 :" + player1.score + "Player2:" + player2.score)
     }
 
     /**
      * Distributes a set of cards for a new game.
      */
-    fun distributeCards() {
-        val cards = defaultRandomCardList() // Get a shuffled list of 52 cards
-        val pyramide = rootService.currentGame
-        checkNotNull(pyramide)
+    fun distributeCards(pyramide: Pyramide): Pyramide {
+        // Get a shuffled list of 52 cards
+        val cards = defaultRandomCardList()
+        // val pyramide = rootService.currentGame
+        // checkNotNull(pyramide)
 
-        createPyramid(cards.take(28))
+        createPyramid(cards.take(28), pyramide)
         pyramide.drawStack.addAll(cards.drop(28))
+        return pyramide
 
     }
 
@@ -134,9 +149,9 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
     /**
      * to creat and initialise new pyramid with cards from card list
      */
-    private fun createPyramid(cards: List<Card>) {
-        val pyramide = rootService.currentGame
-        checkNotNull(pyramide)
+    private fun createPyramid(cards: List<Card>, pyramide: Pyramide): Pyramide {
+        // val pyramide = rootService.currentGame
+        //  checkNotNull(pyramide)
         val pyramidCards = pyramide.cards
         var cardIndex = 0 // To keep track of which card from the list to use
         for (row in 0 until 7) {
@@ -151,12 +166,13 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
                 }
             }
         }
+        return pyramide
     }
 
     /**
      * Reveals new outer cards in the pyramid after a card has been removed.
      */
-    fun flipCard() {
+    fun flipPyramidCards() {
         val pyramide = rootService.currentGame
         checkNotNull(pyramide)
         val rows = pyramide.cards.size
@@ -166,12 +182,12 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
             val lastUnrevealed = pyramide.cards[row].indexOfLast { it != null && !it.isRevealed }
 
             if (firstUnrevealed != -1) {
-                var card = pyramide.cards[row][firstUnrevealed]
+                val card = pyramide.cards[row][firstUnrevealed]
                 checkNotNull(card)
                 card.isRevealed = true
             }
             if (lastUnrevealed != -1 && lastUnrevealed != firstUnrevealed) {
-                var card = pyramide.cards[row][lastUnrevealed]
+                val card = pyramide.cards[row][lastUnrevealed]
                 checkNotNull(card)
                 card.isRevealed = true
             }

@@ -13,16 +13,13 @@ class PlayerActionService(val rootService: RootService) : AbstractRefreshingServ
         val pyramide = rootService.currentGame
         checkNotNull(pyramide)
 
-        //get opponentPass att from root service
-        var opponentPassed = pyramide.opponentPassed
-
         //end game if previous Player already chose Pass
-        if (opponentPassed) {
+        if (pyramide.opponentPassed) {
             game.endGame()
         }
         //otherwise switch to the other player and set Boolean
         else {
-            opponentPassed = true
+            pyramide.opponentPassed = true
             game.changePlayer()
         }
         //refresh view
@@ -43,15 +40,15 @@ class PlayerActionService(val rootService: RootService) : AbstractRefreshingServ
         val isValid: Boolean = game.checkCardChoice(card1, card2)
 
         //get current player
-        val player: Player = pyramide.currentPlayer
+      //  val player: Player = pyramide.currentPlayer
 
         //remove cards
         if (isValid) {
             //award points
             if (card1.value.toString() == "A" || card2.value.toString() == "A") {
-                player.score++
+               pyramide.currentPlayer.score++
             } else {
-                player.score+2
+                pyramide.currentPlayer.score+2
             }
 
             removeCards(card1, card2)
@@ -67,8 +64,8 @@ class PlayerActionService(val rootService: RootService) : AbstractRefreshingServ
             onAllRefreshables { refreshAfterEndGame() }
         } else {
             //Reveal any new cards that need to be revealed
-            game.flipCard()
-            onAllRefreshables { refreshAfterRevealCard() }
+            game.flipPyramidCards()
+            onAllRefreshables { refreshAfterRemovePair( isValid ) }
             //change to next player
             game.changePlayer()
             //refresh view
@@ -131,18 +128,18 @@ class PlayerActionService(val rootService: RootService) : AbstractRefreshingServ
         }
     }
 
-    fun revealCard() {
+    fun revealCard() : Card {
         //get current pyramid from root service
         val pyramide = rootService.currentGame
         checkNotNull(pyramide)
 
         //get current game from root service
         val game= rootService.gameService
-        checkNotNull(game)
+        //checkNotNull(game)
 
         //get DrawStack from root service
         var drawStack = pyramide.drawStack
-        checkNotNull(drawStack)
+        //checkNotNull(drawStack)
 
         //get reserve Stack from root service
         var reserveStack = pyramide.reserveStack
@@ -158,10 +155,11 @@ class PlayerActionService(val rootService: RootService) : AbstractRefreshingServ
         /**
          * reveal card from draw stack and add it to reserve stack
          */
+        var toDrawnCard: Card? = drawStack[0]
+        checkNotNull(toDrawnCard)
         if (isValid()) {
             //player reveals the first card from the drawing stack
-            var toDrawnCard: Card? = drawStack[0]
-            checkNotNull(toDrawnCard)
+
 
             toDrawnCard.isRevealed = true
 
@@ -175,14 +173,16 @@ class PlayerActionService(val rootService: RootService) : AbstractRefreshingServ
             pyramide.opponentPassed = false
 
             // refresh after reveal card
-            onAllRefreshables { refreshAfterRevealCard()
+            onAllRefreshables { refreshAfterRevealCard(toDrawnCard)
 
             //change player
             game.changePlayer()
 
             //refresh after change player
             onAllRefreshables { refreshAfterChangePlayer() }
+
             }
         }
+        return toDrawnCard
     }
 }

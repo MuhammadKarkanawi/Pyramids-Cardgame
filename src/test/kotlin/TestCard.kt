@@ -1,43 +1,71 @@
-import entity.Card
-import entity.CardSuit
-import entity.CardValue
+import entity.*
 import org.junit.jupiter.api.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertFailsWith
+import kotlin.test.*
 
-class TestCard {
+class CardTest {
+
+    // Some cards to perform the tests with
+    private val aceOfSpades = Card(CardSuit.SPADES, CardValue.ACE)
+    private val jackOfClubs = Card(CardSuit.CLUBS, CardValue.JACK)
+    private val queenOfHearts = Card(CardSuit.HEARTS, CardValue.QUEEN)
+    private val otherQueenOfHearts = Card(CardSuit.HEARTS, CardValue.QUEEN)
+    private val jackOfDiamonds = Card(CardSuit.DIAMONDS, CardValue.JACK)
+
+    // unicode characters for the suits, as those should be used by [WarCard.toString]
+    private val heartsChar = '\u2665' // ♥
+    private val diamondsChar = '\u2666' // ♦
+    private val spadesChar = '\u2660' // ♠
+    private val clubsChar = '\u2663' // ♣
+
     /**
-     * Testet, dass die Erstellung eines Card mit gültige werte für Methode isRevealed */
+     * Check if to String produces the correct strings for some test cards
+     * of all four suits.
+     */
     @Test
-    fun caseOne() {
+    fun testToString() {
+        assertEquals(spadesChar + "A", aceOfSpades.toString())
+        assertEquals(clubsChar + "J", jackOfClubs.toString())
+        assertEquals(heartsChar + "Q", queenOfHearts.toString())
+        assertEquals(diamondsChar + "J", jackOfDiamonds.toString())
+    }
 
-// Testdaten erzeugen
-
-        val CardSuit :CardSuit =CardSuit.SPADES
-        val CardValue : CardValue=CardValue.TWO
-        val isRevealed : Boolean = false
-        // Zu testende Methode mit Testdaten aufrufen
-        var createdCard :Card= Card (suit = CardSuit, value = CardValue)
-
-// Test, ob die Werte im neuen Card mit den übergebenen wert übereinstimmt
-        assertEquals (isRevealed, createdCard.isRevealed)
-
-        /**
-         * Testet, dass die Erstellung eines Card mit ungültige initialisierung für isRevealed fehlschlägt */
-        @Test
-        fun  caseTwo(){
-            // Testdaten erzeugen
-            var CardSuit :CardSuit = entity.CardSuit.SPADES
-            var CardValue : CardValue= entity.CardValue.TWO
-            var createdCard :Card= Card (suit = CardSuit, value = CardValue)
-            var isRevealed : Boolean= true
-            // Test: create Card schlägtfehl
-            assertFailsWith<IllegalArgumentException> {
-                // Zu testende Methode mit Testdaten aufrufen
-                createdCard
-
+    /**
+     * Check if toString produces a 2 character string for every possible card
+     * except the 10 (for which length=3 is ensured)
+     */
+    @Test
+    fun testToStringLength() {
+        CardSuit.values().forEach { suit ->
+            CardValue.values().forEach { value ->
+                if (value == CardValue.TEN)
+                    assertEquals(3, Card(suit, value).toString().length)
+                else
+                    assertEquals(2, Card(suit, value).toString().length)
             }
         }
     }
-}
 
+    /**
+     * Check with a few examples if the order introduced by [WarCard.compareTo] allows
+     * to directly compare the value of two cards like `card1 > card2`.
+     */
+    @Test
+    fun testCompareTo() {
+        assertTrue(jackOfDiamonds < queenOfHearts)
+        assertFalse(jackOfClubs < jackOfDiamonds)
+        assertTrue(jackOfClubs <= jackOfDiamonds)
+    }
+
+    /**
+     * Check if two cards with the same CardSuit/CardValue combination are equal
+     * in the sense of the `==` operator, but not the same in the sense of
+     * the `===` operator.
+     */
+    @Test
+    fun testEquals() {
+        assertEquals(queenOfHearts, otherQueenOfHearts)
+        assertNotSame(queenOfHearts, otherQueenOfHearts)
+
+    }
+
+}

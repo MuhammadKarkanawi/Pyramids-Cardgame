@@ -35,5 +35,7 @@ class Pyramide {
     /**cards from pyramid */
     var cards: MutableList<MutableList<Card?>> = Pyramid().cards
 
+    var pyramid : Pyramid = Pyramid()
 
+    fun peek() : Card? = reserveStack[0]
 }

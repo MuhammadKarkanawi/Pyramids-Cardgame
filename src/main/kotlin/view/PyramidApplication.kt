@@ -48,7 +48,7 @@ import service.RootService
 
             // This is just done so that the blurred background when showing
             // the new game menu has content and looks nicer
-            rootService.gameService.startGame("Bob", "Alice")
+            //rootService.gameService.startGame("Bob", "Alice")
 
             this.showGameScene(gameScene)
             this.showMenuScene(newGameMenuScene, 0)

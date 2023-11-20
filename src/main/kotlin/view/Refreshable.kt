@@ -1,5 +1,7 @@
 package view
 
+import entity.Card
+
 interface Refreshable {
     /**
      * refresh after pass
@@ -14,7 +16,7 @@ interface Refreshable {
     /**
      * refresh after reveal card
      */
-    fun refreshAfterRevealCard():Unit{}
+    fun refreshAfterRevealCard(card:Card):Unit{}
 
     /**
      * refresh after changing player

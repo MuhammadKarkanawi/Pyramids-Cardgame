@@ -8,7 +8,7 @@ class Playertest {
         var playerScore =0
 
         // Zu testende Methode mit Testdaten aufrufen
-        var createdPlayer: Player = Player(playerName, playerScore)
+        var createdPlayer: Player = Player(playerName)
 // Test, ob die Werte im neuen Modul mit den übergebenen wert übereinstimmt
         assertEquals (playerName , createdPlayer.name)
         assertEquals (playerScore, createdPlayer.score )
@@ -23,7 +23,7 @@ class Playertest {
 // Test: create Module schlägtfehl
             assertFailsWith<IllegalArgumentException> {
                 // Zu testende Methode mit Testdaten aufrufen
-                var createdPlayer: Player = Player(playerName, playerScore)
+                var createdPlayer: Player = Player(playerName)
             }
         }
     }
