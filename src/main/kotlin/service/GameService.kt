@@ -15,9 +15,9 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
      * this methode start and initialise a new game
      */
     fun startGame(player1Name: String, player2Name: String) {
-        val pyramide = rootService.currentGame
+        val pyramide = rootService.currentGame!!
 
-        checkNotNull(pyramide)
+        //checkNotNull(pyramide)
 
         player1 = Player(player1Name)
         player2 = Player(player2Name)
@@ -150,8 +150,8 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
      * to creat and initialise new pyramid with cards from card list
      */
     private fun createPyramid(cards: List<Card>, pyramide: Pyramide): Pyramide {
-        // val pyramide = rootService.currentGame
-        //  checkNotNull(pyramide)
+         val pyramide = rootService.currentGame
+          checkNotNull(pyramide)
         val pyramidCards = pyramide.cards
         var cardIndex = 0 // To keep track of which card from the list to use
         for (row in 0 until 7) {
@@ -185,11 +185,13 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
                 val card = pyramide.cards[row][firstUnrevealed]
                 checkNotNull(card)
                 card.isRevealed = true
+                onAllRefreshables { refreshAfterFlip() }
             }
             if (lastUnrevealed != -1 && lastUnrevealed != firstUnrevealed) {
                 val card = pyramide.cards[row][lastUnrevealed]
                 checkNotNull(card)
                 card.isRevealed = true
+                onAllRefreshables { refreshAfterFlip() }
             }
         }
     }

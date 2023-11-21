@@ -18,6 +18,8 @@ interface Refreshable {
      */
     fun refreshAfterRevealCard(card:Card):Unit{}
 
+   fun refreshAfterFlip() : Unit{}
+
     /**
      * refresh after changing player
      */
