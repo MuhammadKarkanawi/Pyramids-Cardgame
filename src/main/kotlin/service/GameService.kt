@@ -2,6 +2,7 @@ package service
 
 import AbstractRefreshingService
 import entity.*
+import service.*
 
 class GameService(private val rootService: RootService) : AbstractRefreshingService() {
 
@@ -15,10 +16,10 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
      * this methode start and initialise a new game
      */
     fun startGame(player1Name: String, player2Name: String) {
-        val pyramide = rootService.currentGame!!
+        //var pyramide = rootService.
 
-        //checkNotNull(pyramide)
-
+       // checkNotNull(pyramide)
+        var pyramide = Pyramide()
         player1 = Player(player1Name)
         player2 = Player(player2Name)
 
@@ -27,10 +28,15 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         playerListe.add(0, player1)
         playerListe.add(1, player2)
 
-        pyramide.playerList = playerListe
-        rootService.currentGame = distributeCards(pyramide)
+        pyramide.playerList=playerListe
 
+        pyramide = distributeCards(pyramide)
+
+        rootService.currentGame = pyramide
+
+        rootService.addRefreshables()
         onAllRefreshables { refreshAfterStartGame() }
+
     }
 
     fun changePlayer(): Player {
@@ -40,15 +46,15 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
 
         if (pyramide.indexPlayer == 0) {
             pyramide.indexPlayer = 1
-            pyramide.currentPlayer = pyramide.playerList[pyramide.indexPlayer]
 
+            rootService.addRefreshables()
             onAllRefreshables { refreshAfterChangePlayer() }
 
             return pyramide.currentPlayer
         } else {
             pyramide.indexPlayer = 0
-            pyramide.currentPlayer = pyramide.playerList[pyramide.indexPlayer]
 
+            rootService.addRefreshables()
             onAllRefreshables { refreshAfterChangePlayer() }
 
             return pyramide.currentPlayer
@@ -108,6 +114,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         }
 
         showResult()
+        rootService.addRefreshables()
         onAllRefreshables { refreshAfterEndGame() }
 
     }
@@ -142,7 +149,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
     private fun defaultRandomCardList(): List<Card> = List(52) { index ->
         Card(
             CardSuit.values()[index % 4],
-            CardValue.values()[index % 13 + 2]
+            CardValue.values()[index % 13]
         )
     }.shuffled()
 
@@ -150,15 +157,21 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
      * to creat and initialise new pyramid with cards from card list
      */
     private fun createPyramid(cards: List<Card>, pyramide: Pyramide): Pyramide {
-         val pyramide = rootService.currentGame
-          checkNotNull(pyramide)
-        val pyramidCards = pyramide.cards
-        var cardIndex = 0 // To keep track of which card from the list to use
+
+
+
+        var index = 0
+
+          var pyramidCards : MutableList<MutableList<Card?>> = MutableList(7) { x ->
+           MutableList(x+1) {y ->
+               index++
+               cards[index-1]
+            }
+          }
+
         for (row in 0 until 7) {
             for (col in 0 until row + 1) {
                 if (cards.isNotEmpty()) {
-                    pyramidCards[row][col] = cards[cardIndex]
-                    cardIndex++
                     if (col == 0 || col == row) {
                         pyramidCards[row][col]?.isRevealed = true // Reveal the outer cards
                     }
@@ -166,6 +179,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
                 }
             }
         }
+         pyramide.cards = pyramidCards
         return pyramide
     }
 
@@ -185,12 +199,16 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
                 val card = pyramide.cards[row][firstUnrevealed]
                 checkNotNull(card)
                 card.isRevealed = true
+
+                rootService.addRefreshables()
                 onAllRefreshables { refreshAfterFlip() }
             }
             if (lastUnrevealed != -1 && lastUnrevealed != firstUnrevealed) {
                 val card = pyramide.cards[row][lastUnrevealed]
                 checkNotNull(card)
                 card.isRevealed = true
+
+                rootService.addRefreshables()
                 onAllRefreshables { refreshAfterFlip() }
             }
         }

@@ -23,6 +23,7 @@ class PlayerActionService(val rootService: RootService) : AbstractRefreshingServ
             game.changePlayer()
         }
         //refresh view
+        rootService.addRefreshables()
         onAllRefreshables { refreshAfterPass() }
     }
 
@@ -54,6 +55,7 @@ class PlayerActionService(val rootService: RootService) : AbstractRefreshingServ
             removeCards(card1, card2)
 
             //update opponentPassed Boolean
+            rootService.addRefreshables()
             onAllRefreshables { refreshAfterRemovePair(isValid) }
         }
 
@@ -69,6 +71,7 @@ class PlayerActionService(val rootService: RootService) : AbstractRefreshingServ
             //change to next player
             game.changePlayer()
             //refresh view
+            rootService.addRefreshables()
             onAllRefreshables { refreshAfterChangePlayer() }
         }
     }
@@ -173,12 +176,14 @@ class PlayerActionService(val rootService: RootService) : AbstractRefreshingServ
             pyramide.opponentPassed = false
 
             // refresh after reveal card
+            rootService.addRefreshables()
             onAllRefreshables { refreshAfterRevealCard(toDrawnCard)
 
             //change player
             game.changePlayer()
 
             //refresh after change player
+            rootService.addRefreshables()
             onAllRefreshables { refreshAfterChangePlayer() }
 
             }

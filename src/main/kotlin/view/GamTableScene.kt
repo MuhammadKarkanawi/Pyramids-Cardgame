@@ -22,10 +22,10 @@ class GameTableScene(private val rootService: RootService) : BoardGameScene(1920
     private var reserveCard: Card? = null
 
 
-    private val pyramidStack=LabeledStackView(posX = 600, posY = 50)
+    private val pyramidStack = LabeledStackView(posX = 600, posY = 50)
     private val drawStack = LabeledStackView(posX = 100, posY = 500).apply {
         onMouseClicked = {
-            rootService.currentGame?.let { game ->
+            rootService.currentGame?.let { pyramide ->
                 rootService.playerActionService.revealCard()
             }
         }
@@ -40,7 +40,7 @@ class GameTableScene(private val rootService: RootService) : BoardGameScene(1920
         visual = ColorVisual(Color.LIGHT_GRAY)
 
         onMouseClicked = {
-            rootService.currentGame?.let { game ->
+            rootService.currentGame?.let { pyramide ->
                 rootService.playerActionService.pass()
             }
         }
@@ -109,17 +109,25 @@ class GameTableScene(private val rootService: RootService) : BoardGameScene(1920
         pyramide.playerList.forEach { it.score = 0 }
 
         cardMap.clear()
-
-
-        val cardImageLoader = CardImageLoader()
-
-        initializeStackView1(pyramide.pyramid , pyramidStack,cardImageLoader)
-        // initializeStackView(pyramide.drawStack, drawStack, cardImageLoader)
-        // initializeStackView(pyramide.reserveStack, reserveStack, cardImageLoader)
-
         pyramidStack.clear()
         drawStack.clear()
         reserveStack.clear()
+
+        val cardImageLoader = CardImageLoader()
+
+        //initializeStackView(rootService.currentGame.drawStack,drawStack)
+        initializeStackView1(pyramide.pyramid , pyramidStack,cardImageLoader)
+
+         //initializeStackView(pyramide.reserveStack, reserveStack, cardImageLoader)
+
+        for (row in rootService.currentGame?.pyramid?.cards!!.indices) {
+            for (col in rootService.currentGame!!.pyramid.cards[row].indices) {
+                val card = rootService.currentGame!!.pyramid.cards[row][col]
+                if (card != null) {
+                    addComponents(cardMap.forward(card))
+                }
+            }
+        }
 
         // Update player labels and score displays
         player1Label.text = "Player 1: ${pyramide.indexPlayer == 0}"
@@ -131,10 +139,10 @@ class GameTableScene(private val rootService: RootService) : BoardGameScene(1920
     }
 
 
-    private fun initializeStackView(stack: CardStack, stackView: LabeledStackView, cardImageLoader: CardImageLoader) {
+    private fun initializeStackView(stack: MutableList<Card?>, stackView: LabeledStackView, cardImageLoader: CardImageLoader) {
         stackView.clear()
 
-        stack.peekAll().reversed().forEachIndexed { index, card ->
+        stack.reversed().forEachIndexed { index, card ->
             val cardView = CardView(
                 height = 100,
                 width = 80,
@@ -145,9 +153,7 @@ class GameTableScene(private val rootService: RootService) : BoardGameScene(1920
             cardView.posX = stackView.posX + (index * 1)
             cardView.posY = stackView.posY + (index * 1)
 
-            addComponents(cardView)
 
-            cardMap.add(card to cardView)
         }
     }
 
@@ -155,7 +161,7 @@ class GameTableScene(private val rootService: RootService) : BoardGameScene(1920
     private fun initializeStackView1(pyramide: Pyramid, stackView: LabeledStackView, cardImageLoader: CardImageLoader) {
         stackView.clear()
 
-        val cardWidth = 100
+        val cardWidth = 80
         val cardHeight = 100
         val rowHeight = 120
 
@@ -201,7 +207,7 @@ class GameTableScene(private val rootService: RootService) : BoardGameScene(1920
             } else {
                 // If reserve stack is selected, remove pair with the first card from the reserve stack
                 rootService.currentGame?.reserveStack?.let {
-                    //val reserveCard = it.peek()
+                    val reserveCard = it.peek()
                     secondClickedCard=clickedCard
                     println("Card from the pyramid :$secondClickedCard")
                     println("Reserve stack card clicked: $reserveCard")
@@ -236,11 +242,9 @@ class GameTableScene(private val rootService: RootService) : BoardGameScene(1920
         return CardView(
             height = height,
             width = width,
-            front = if (isOuterCard) {
-                ImageVisual(cardImageLoader.frontImageFor(card.suit, card.value))
-            } else {
-                ImageVisual(cardImageLoader.backImage)
-            }
+            front = ImageVisual(cardImageLoader.frontImageFor(card.suit, card.value)),
+            back = ImageVisual(cardImageLoader.backImage)
+
         )
     }
 

@@ -20,7 +20,8 @@ class Pyramide {
     /**
      * Int value indicating the current player (0= Player1; 1=Player2)
      */
-    var currentPlayer: Player = playerList[indexPlayer]
+    val currentPlayer: Player
+        get() = playerList[indexPlayer]
 
     /**
      * a stack of cards indicating the drawStack
@@ -33,9 +34,10 @@ class Pyramide {
     var reserveStack: MutableList<Card?> = CardStack().reserveStack
 
     /**cards from pyramid */
-    var cards: MutableList<MutableList<Card?>> = Pyramid().cards
-
     var pyramid : Pyramid = Pyramid()
+    var cards: MutableList<MutableList<Card?>> = pyramid.cards
+
+
 
     fun peek() : Card? = reserveStack[0]
 }
