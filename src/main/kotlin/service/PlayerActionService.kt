@@ -46,10 +46,10 @@ class PlayerActionService(val rootService: RootService) : AbstractRefreshingServ
         //remove cards
         if (isValid) {
             //award points
-            if (card1.value == CardValue.ACE || card2.value == CardValue.ACE) {
+            if ((card1.value == CardValue.ACE).xor(card2.value == CardValue.ACE)) {
                pyramide.currentPlayer.score++
             } else {
-                pyramide.currentPlayer.score+2
+                pyramide.currentPlayer.score=+2
             }
 
             removeCards(card1, card2)

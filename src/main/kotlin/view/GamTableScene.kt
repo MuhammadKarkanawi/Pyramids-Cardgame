@@ -44,18 +44,8 @@ class GameTableScene(private val rootService: RootService) : BoardGameScene(1920
             }
         }
     }
-    private val reserveStack = LabeledStackView(posX = 300, posY = 500).apply {
-       if(!isEmpty()){
-           val card = cardMap.backward(peek())
-        onMouseClicked = {
-            if (clickCounter == 0) {
-                handleFirstCardClick(card)
-            } else {
-                handleSecondCardClick(card)
-            }
-        }
-        }
-    }
+    private val reserveStack = LabeledStackView(posX = 300, posY = 500)
+
 
 
     private val cardMap: BidirectionalMap<Card, CardView> = BidirectionalMap()
@@ -125,14 +115,6 @@ class GameTableScene(private val rootService: RootService) : BoardGameScene(1920
         initializeStackView1(pyramide.pyramid, pyramidStack, cardImageLoader)
 
         //initializeStackView(pyramide.reserveStack, reserveStack, cardImageLoader)
-        for (row in rootService.currentGame?.pyramid?.cards!!.indices) {
-            for (col in rootService.currentGame!!.pyramid.cards[row].indices) {
-                val card = rootService.currentGame!!.pyramid.cards[row][col]
-                if (card != null) {
-                    addComponents(cardMap.forward(card))
-                }
-            }
-        }
 
         // Update player labels and score displays
         player1Label.text = "Player 1: ${pyramide.indexPlayer == 0}"
@@ -151,7 +133,7 @@ class GameTableScene(private val rootService: RootService) : BoardGameScene(1920
     ) {
         stackView.clear()
 
-        stack.reversed().forEachIndexed { index, card ->
+        stack.forEachIndexed { index, card ->
             val cardView = CardView(
                 height = 100,
                 width = 80,
@@ -162,6 +144,7 @@ class GameTableScene(private val rootService: RootService) : BoardGameScene(1920
             cardView.posX = stackView.posX + (index * 1)
             cardView.posY = stackView.posY + (index * 1)
 
+            cardMap.add(card to cardView)
             stackView.add(cardView)
         }
     }
@@ -321,6 +304,17 @@ class GameTableScene(private val rootService: RootService) : BoardGameScene(1920
             when (cardView.currentSide) {
                 CardView.CardSide.BACK -> cardView.showFront()
                 CardView.CardSide.FRONT -> cardView.showBack()
+            }
+        }
+        cardView.apply {
+            val card = cardMap.backward(this)
+            onMouseClicked = {
+                println("clicked")
+                if (clickCounter == 0) {
+                    handleFirstCardClick(card)
+                } else {
+                    handleSecondCardClick(card)
+                }
             }
         }
         cardView.removeFromParent()

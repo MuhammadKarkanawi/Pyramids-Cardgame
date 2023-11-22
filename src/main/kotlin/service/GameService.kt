@@ -46,7 +46,9 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
 
         if (pyramide.indexPlayer == 0) {
             pyramide.indexPlayer = 1
-
+        if(pyramide.indexPlayer == 1){
+            pyramide.indexPlayer = 0
+        }
             rootService.addRefreshables()
             onAllRefreshables { refreshAfterChangePlayer() }
 
