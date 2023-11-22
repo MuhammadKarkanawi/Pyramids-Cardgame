@@ -26,18 +26,18 @@ class Pyramide {
     /**
      * a stack of cards indicating the drawStack
      */
-    var drawStack: MutableList<Card?> = CardStack().drawStack
+    var drawStack: CardStack = CardStack(mutableListOf())
 
     /**
      * a stack of cards indicating the reserveStack
      */
-    var reserveStack: MutableList<Card?> = CardStack().reserveStack
+    var reserveStack: CardStack = CardStack(mutableListOf())
 
     /**cards from pyramid */
     var pyramid : Pyramid = Pyramid()
-    var cards: MutableList<MutableList<Card?>> = pyramid.cards
+    var cards: MutableList<Card> = mutableListOf()
 
 
 
-    fun peek() : Card? = reserveStack[0]
+    fun peek() : Card = reserveStack.cards[0]
 }

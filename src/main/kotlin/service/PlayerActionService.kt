@@ -46,7 +46,7 @@ class PlayerActionService(val rootService: RootService) : AbstractRefreshingServ
         //remove cards
         if (isValid) {
             //award points
-            if (card1.value.toString() == "A" || card2.value.toString() == "A") {
+            if (card1.value == CardValue.ACE || card2.value == CardValue.ACE) {
                pyramide.currentPlayer.score++
             } else {
                 pyramide.currentPlayer.score+2
@@ -56,9 +56,7 @@ class PlayerActionService(val rootService: RootService) : AbstractRefreshingServ
 
             //update opponentPassed Boolean
             rootService.addRefreshables()
-            onAllRefreshables { refreshAfterRemovePair(isValid) }
         }
-
         val isEmpty = game.isEmpty()
         //check if Pyramide.Pyramid entity has cards left and end game if not
         if (isEmpty) {
@@ -84,49 +82,21 @@ class PlayerActionService(val rootService: RootService) : AbstractRefreshingServ
         val game = rootService.gameService
         checkNotNull(game)
 
-        val pyramideCards: MutableList<MutableList<Card?>> = pyramide.cards
-
-        //check validity of choosen cards and save result
-        var isValid: Boolean = game.checkCardChoice(card1, card2)
-        var reserveStacksize: Int = pyramide.reserveStack.size
-        if (isValid) {
-            if (reserveStacksize != 0) {
-                //if erste karte in reserveStack gefunden
-                if (card1 in pyramide.reserveStack) {
-                    pyramide.reserveStack.removeAt(0)
-
-                    //if zweite karte in Pyramid gefunden
-                    for (i in 0..6) {
-                        if (card2 == pyramideCards[i][0]) {
-                            pyramideCards[i][0] = null
-                        } else if (card2 == pyramideCards[i][pyramideCards[i].size - 1]) {
-                            pyramideCards[i][pyramideCards[i].size - 1] = null
-                        }
-                    }
-                }
-                //if zweite karte in reserveStack gefunden
-                else if (card2 in pyramide.reserveStack) {
-                    pyramide.reserveStack.removeAt(0)
-                    //if erste karte in Pyramid gefunden
-                    for (i in 0..6) {
-                        if (card1 == pyramideCards[i][0]) {
-                            pyramideCards[i][0] = null
-                        } else if (card1 == pyramideCards[i][pyramideCards[i].size - 1]) {
-                            pyramideCards[i][pyramideCards[i].size - 1] = null
-                        }
-                    }
-                }
+        val pyramideCards = pyramide.pyramid
+        if(!pyramide.reserveStack.cards.isEmpty()) {
+            //check validity of choosen cards and save result
+            if (card1 == pyramide.reserveStack.cards[0]) {
+                pyramide.reserveStack.cards.remove(card1)
             }
-            // beide karten im pyramid gefunden
-            else {
-                for (i in 0..6) {
-                    if (card1 == pyramideCards[i][0] || card2 == pyramideCards[i][0]) {
-                        pyramideCards[i][0] = null
-                    }
-                    if (card1 == pyramideCards[i][pyramideCards[i].size - 1] || card2 == pyramideCards[i][pyramideCards[i].size - 1]) {
-                        pyramideCards[i][pyramideCards[i].size - 1] = null
-                    }
-                }
+            if (card2 == pyramide.reserveStack.cards[0]) {
+                pyramide.reserveStack.cards.remove(card2)
+            }
+        }
+        for(i in pyramideCards.cards.indices.reversed()){
+            pyramideCards.cards[i].remove(card1)
+            pyramideCards.cards[i].remove(card2)
+            if(pyramideCards.cards[i].isEmpty()){
+                pyramideCards.cards.removeAt(i)
             }
         }
     }
@@ -150,7 +120,7 @@ class PlayerActionService(val rootService: RootService) : AbstractRefreshingServ
         checkNotNull(reserveStack)
 
         //check if DrawStack has at least one card
-        var drawStackSize: Int = drawStack.size
+        var drawStackSize: Int = drawStack.cards.size
 
         fun isValid(): Boolean {
             return drawStackSize != 0
@@ -158,7 +128,7 @@ class PlayerActionService(val rootService: RootService) : AbstractRefreshingServ
         /**
          * reveal card from draw stack and add it to reserve stack
          */
-        var toDrawnCard: Card? = drawStack[0]
+        var toDrawnCard: Card? = drawStack.cards[0]
         checkNotNull(toDrawnCard)
         if (isValid()) {
             //player reveals the first card from the drawing stack
@@ -167,10 +137,10 @@ class PlayerActionService(val rootService: RootService) : AbstractRefreshingServ
             toDrawnCard.isRevealed = true
 
             //player removes the first card from the stack
-            drawStack.removeAt(0)
+            drawStack.cards.removeAt(0)
 
             //add drawn card to reserve stack, all cards in the reserve Stack get pushed to the right
-            reserveStack.add(0, toDrawnCard)
+            reserveStack.cards.add(0, toDrawnCard)
 
             //reset Pass counter
             pyramide.opponentPassed = false

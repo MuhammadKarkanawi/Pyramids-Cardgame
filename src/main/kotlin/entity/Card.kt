@@ -18,7 +18,7 @@ data class Card(val suits: CardSuit, val values: CardValue) {
   override fun toString():String = "$suit$value"
 
   /**
-   * compares two [Card]s according to the [Enum.ordinal] value of their [CardSuit]
+   * compares two [ Card]s according to the [Enum.ordinal] value of their [CardSuit]
    * (i.e., the order in which the suits are declared in the enum class)
    */
   operator fun compareTo(other: Card) = this.value.ordinal - other.value.ordinal

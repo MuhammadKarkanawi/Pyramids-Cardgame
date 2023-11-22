@@ -81,7 +81,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         val pyramide = rootService.currentGame
         checkNotNull(pyramide)
 
-        val pyramidCards = pyramide.cards
+        val pyramidCards = pyramide.pyramid.cards
 
         checkNotNull(pyramidCards)
 
@@ -136,7 +136,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         // checkNotNull(pyramide)
 
         createPyramid(cards.take(28), pyramide)
-        pyramide.drawStack.addAll(cards.drop(28))
+        pyramide.drawStack.cards.addAll(cards.drop(28))
         return pyramide
 
     }
@@ -157,29 +157,17 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
      * to creat and initialise new pyramid with cards from card list
      */
     private fun createPyramid(cards: List<Card>, pyramide: Pyramide): Pyramide {
-
-
-
-        var index = 0
-
-          var pyramidCards : MutableList<MutableList<Card?>> = MutableList(7) { x ->
-           MutableList(x+1) {y ->
-               index++
-               cards[index-1]
-            }
-          }
+            var i = 0
+          var pyramidCards = mutableListOf<MutableList<Card>>()
 
         for (row in 0 until 7) {
+            pyramidCards.add(mutableListOf())
             for (col in 0 until row + 1) {
-                if (cards.isNotEmpty()) {
-                    if (col == 0 || col == row) {
-                        pyramidCards[row][col]?.isRevealed = true // Reveal the outer cards
-                    }
-
-                }
+                pyramidCards[row].add(cards[i])
+                i++
             }
         }
-         pyramide.cards = pyramidCards
+         pyramide.pyramid.cards = pyramidCards
         return pyramide
     }
 
@@ -187,30 +175,12 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
      * Reveals new outer cards in the pyramid after a card has been removed.
      */
     fun flipPyramidCards() {
-        val pyramide = rootService.currentGame
-        checkNotNull(pyramide)
-        val rows = pyramide.cards.size
-
-        for (row in 0 until rows) {
-            val firstUnrevealed = pyramide.cards[row].indexOfFirst { it != null && !it.isRevealed }
-            val lastUnrevealed = pyramide.cards[row].indexOfLast { it != null && !it.isRevealed }
-
-            if (firstUnrevealed != -1) {
-                val card = pyramide.cards[row][firstUnrevealed]
-                checkNotNull(card)
-                card.isRevealed = true
-
-                rootService.addRefreshables()
-                onAllRefreshables { refreshAfterFlip() }
-            }
-            if (lastUnrevealed != -1 && lastUnrevealed != firstUnrevealed) {
-                val card = pyramide.cards[row][lastUnrevealed]
-                checkNotNull(card)
-                card.isRevealed = true
-
-                rootService.addRefreshables()
-                onAllRefreshables { refreshAfterFlip() }
-            }
+        val currentGame = rootService.currentGame
+        checkNotNull(currentGame)
+        val pyramid = currentGame.pyramid
+        for(i in 0 until pyramid.cards.size){
+            pyramid.cards[i].first().isRevealed =true
+            pyramid.cards[i].last().isRevealed = true
         }
     }
 }
