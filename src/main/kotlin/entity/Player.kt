@@ -2,8 +2,7 @@ package entity
 
 
 /**
- * Constructor for the 2 players
- *
+ *  Erstellt einen Spieler mit dem angegebenen Namen und einer anfänglichen Punktzahl von 0.
  * @property name The name of the player.
  * @property score The score of the player.
  */
@@ -14,6 +13,4 @@ class Player {
     this.name=name
         this.score=0
        }
-
-  //  fun setScore(i:Int): Unit {this.score + i }
 }

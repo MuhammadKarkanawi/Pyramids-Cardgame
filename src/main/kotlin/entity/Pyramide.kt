@@ -37,7 +37,11 @@ class Pyramide {
     var pyramid : Pyramid = Pyramid()
     var cards: MutableList<Card> = mutableListOf()
 
-
-
+    /**
+     * Retrieves the top card from the reserve stack without removing it.
+     *
+     * @return The top card in the reserve stack.
+     * @throws NoSuchElementException if the reserve stack is empty.
+     */
     fun peek() : Card = reserveStack.cards[0]
 }

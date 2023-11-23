@@ -7,14 +7,10 @@ class Pyramid() {
 
     var cards: MutableList<MutableList<Card>> = mutableListOf()
 
+    /**
+     *Check if all elements in the pyramid are null.
+     */
     fun isEmpty(): Boolean {
-        // Check if all elements in the pyramid are null.
+
         return cards.isEmpty()}
-
-        /**
-         * returns the top card from the stack *without removing* it from the stack.
-         * Use [draw] if you want the card also to be removed.
-         */
-
-
 }

@@ -3,7 +3,13 @@ package service
 import AbstractRefreshingService
 import entity.*
 
+/**
+ * A class responsible for managing player actions and interactions during the game
+ */
 class PlayerActionService(val rootService: RootService) : AbstractRefreshingService() {
+    /**
+     * Passes the turn to the next player or ends the game if both players have passed.
+     */
     fun pass() {    //get current game from root service
         // get current game from root service
         val game = rootService.gameService
@@ -27,6 +33,12 @@ class PlayerActionService(val rootService: RootService) : AbstractRefreshingServ
         onAllRefreshables { refreshAfterPass() }
     }
 
+    /**
+     * Removes a valid pair of cards from the pyramid, awards points, and manages game progress.
+     *
+     * @param card1 The first card to be removed.
+     * @param card2 The second card to be removed.
+     */
     fun removePair(card1: Card, card2: Card) {
 
         //get current game from rootService
@@ -39,9 +51,6 @@ class PlayerActionService(val rootService: RootService) : AbstractRefreshingServ
 
         //check validity of choosen cards and save result
         val isValid: Boolean = game.checkCardChoice(card1, card2)
-
-        //get current player
-      //  val player: Player = pyramide.currentPlayer
 
         //remove cards
         if (isValid) {
@@ -74,6 +83,12 @@ class PlayerActionService(val rootService: RootService) : AbstractRefreshingServ
         }
     }
 
+    /**
+     * Removes chosen cards from the pyramid and reserve stack.
+     *
+     * @param card1 The first card to be removed.
+     * @param card2 The second card to be removed.
+     */
     private fun removeCards(card1: Card, card2: Card) {
 
         val pyramide = rootService.currentGame
@@ -100,7 +115,11 @@ class PlayerActionService(val rootService: RootService) : AbstractRefreshingServ
             }
         }
     }
-
+    /**
+     * Reveals a card from the draw stack and adds it to the reserve stack.
+     *
+     * @return The revealed card.
+     */
     fun revealCard() : Card {
         //get current pyramid from root service
         val pyramide = rootService.currentGame

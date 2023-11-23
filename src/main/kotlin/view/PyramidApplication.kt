@@ -1,6 +1,5 @@
 package view
 
-import GameTableScene
 import tools.aqua.bgw.core.BoardGameApplication
 import service.RootService
 

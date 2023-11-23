@@ -47,6 +47,11 @@ enum class CardValue {
             ACE -> "A"
         }
 
+
+    /**
+     * provide an Int  to represent this value.
+     * Returns one of: 2/3/4/5/6/7/8/9/10/J/Q/K/A
+     */
     fun toInt() =
         when(this) {
             TWO -> 2
@@ -63,19 +68,4 @@ enum class CardValue {
             KING -> 13
             ACE -> 14
         }
-
-    companion object {
-
-        /**
-         * A set of values for a reduced set of 4x8=32 cards (starting with the 7)
-         */
-        fun shortDeck(): Set<CardValue> {
-            return EnumSet.of(ACE, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING)
-        }
-
-    }
-
-
-
-
 }

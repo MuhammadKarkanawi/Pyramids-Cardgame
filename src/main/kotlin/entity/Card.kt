@@ -12,9 +12,11 @@ data class Card(val suits: CardSuit, val values: CardValue) {
   val value : CardValue = values
 
   var isRevealed : Boolean= false
-  //fun getSuit():CardSuit{return this.typ}
 
-  //fun getValue():CardValue {return this.wert}
+/**
+ * Gibt eine String-Repräsentation dieses Card-Objekts zurück.
+ *@return Eine benutzerfreundliche String-Repräsentation dieses Card-Objekts.
+ */
   override fun toString():String = "$suit$value"
 
   /**

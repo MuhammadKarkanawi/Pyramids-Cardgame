@@ -2,8 +2,12 @@ package service
 
 import AbstractRefreshingService
 import entity.*
-import service.*
 
+/**
+ * Creates a GameService with the provided RootService.
+ *
+ * @param rootService The RootService to use for game management.
+ */
 class GameService(private val rootService: RootService) : AbstractRefreshingService() {
 
     /**
@@ -13,7 +17,10 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
     var player2: Player = Player("")
 
     /**
-     * this methode start and initialise a new game
+     * Starts and initializes a new game with two players.
+     *
+     * @param player1Name The name of the first player.
+     * @param player2Name The name of the second player.
      */
     fun startGame(player1Name: String, player2Name: String) {
         //var pyramide = rootService.
@@ -38,7 +45,11 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         onAllRefreshables { refreshAfterStartGame() }
 
     }
-
+    /**
+     * Changes the active player and triggers a refresh.
+     *
+     * @return The new active player.
+     */
     fun changePlayer(): Player {
         val pyramide = rootService.currentGame
 
@@ -61,10 +72,15 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
 
             return pyramide.currentPlayer
         }
-
-
     }
 
+    /**
+     * Checks if the chosen pair of cards forms a valid move.
+     *
+     * @param card1 The first card.
+     * @param card2 The second card.
+     * @return True if the move is valid, false otherwise.
+     */
     fun checkCardChoice(card1: Card, card2: Card): Boolean {
 
 
@@ -77,7 +93,9 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
     }
 
     /**
-     * isEmpty check the pyramid is free from cards
+     * Checks if the pyramid is free from cards.
+     *
+     * @return True if the pyramid is empty, false otherwise.
      */
     fun isEmpty(): Boolean {
         val pyramide = rootService.currentGame
@@ -99,7 +117,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
     }
 
     /**
-     * when the game ends will show the winner
+     * Ends the game and displays the winner.
      */
     fun endGame() {
         val pyramide = rootService.currentGame
@@ -122,7 +140,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
     }
 
     /**
-     * will show the results
+     * Displays the results of the game.
      */
     fun showResult() {
         println("Player1 :" + player1.score + "Player2:" + player2.score)
@@ -130,6 +148,9 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
 
     /**
      * Distributes a set of cards for a new game.
+     *
+     * @param pyramide The pyramid to distribute cards to.
+     * @return The updated pyramid.
      */
     fun distributeCards(pyramide: Pyramide): Pyramide {
         // Get a shuffled list of 52 cards
@@ -156,7 +177,11 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
     }.shuffled()
 
     /**
-     * to creat and initialise new pyramid with cards from card list
+     * Creates and initializes a new pyramid with cards from the card list.
+     *
+     * @param cards The list of cards to use for the pyramid.
+     * @param pyramide The pyramid to initialize.
+     * @return The initialized pyramid.
      */
     private fun createPyramid(cards: List<Card>, pyramide: Pyramide): Pyramide {
             var i = 0

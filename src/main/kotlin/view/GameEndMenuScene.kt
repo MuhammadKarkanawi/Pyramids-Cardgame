@@ -42,7 +42,18 @@ class GameEndMenuScene(private val rootService: RootService) : MenuScene(400, 10
         addComponents(headlineLabel, p1Score, p2Score, gameResult, newGameButton, quitButton)
     }
 
+    /**
+     * Generates a string representing the player's name and score.
+     *
+     * @return A formatted string: "<player name> scored <score> points."
+     */
     private fun Player.scoreString() : String = "${this.name} scored ${this.score} points."
+
+    /**
+     * Generates a string representing the result of the game.
+     *
+     * @return A string indicating the winner or a draw.
+     */
     private fun gameResultString(): String {
         val p1Score = rootService.gameService.player1.score
         val p2Score = rootService.gameService.player2.score
@@ -52,7 +63,11 @@ class GameEndMenuScene(private val rootService: RootService) : MenuScene(400, 10
             else -> "Draw. No winner."
         }
     }
-
+    /**
+     * Refreshes the UI after the end of the game, updating player scores and displaying the game result.
+     *
+     * Throws an exception if no game is running.
+     */
      fun refreshAfterGameEnd() {
         val game = rootService.gameService
         checkNotNull(game) { "No game running" }
@@ -60,7 +75,5 @@ class GameEndMenuScene(private val rootService: RootService) : MenuScene(400, 10
         p1Score.text = game.player1.scoreString()
         p2Score.text = game.player2.scoreString()
         gameResult.text = gameResultString()
-
     }
-
 }

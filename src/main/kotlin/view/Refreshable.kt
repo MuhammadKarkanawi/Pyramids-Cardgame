@@ -4,34 +4,37 @@ import entity.Card
 
 interface Refreshable {
     /**
-     * refresh after pass
+     * abstract method for refresh after pass
      */
     fun refreshAfterPass():Unit{}
 
     /**
-     * refresh after remove pair
+     * abstract method for refresh after remove pair
      */
     fun refreshAfterRemovePair(isValid:Boolean):Unit{}
 
     /**
-     * refresh after reveal card
+     * abstract method for refresh after reveal card
      */
     fun refreshAfterRevealCard(card:Card):Unit{}
 
+    /**
+     * abstract method for refresh after flip card from draw stack
+     */
    fun refreshAfterFlip() : Unit{}
 
     /**
-     * refresh after changing player
+     * abstract method for refresh after changing player
      */
     fun refreshAfterChangePlayer():Unit{}
 
     /**
-     * refresh after start game
+     * abstract method for refresh after start game
      */
     fun refreshAfterStartGame():Unit{}
 
     /**
-     * refresh after ending game
+     * abstract method for refresh after ending game
      */
     fun refreshAfterEndGame():Unit{}
 }
