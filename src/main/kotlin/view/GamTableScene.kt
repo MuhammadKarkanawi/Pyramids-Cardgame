@@ -105,6 +105,7 @@ class GameTableScene(private val rootService: RootService) : BoardGameScene(1920
             player2Label, player2ScoreDisplay, passLabel
         )
     }
+
     /**
      * Function to refresh the UI after starting a new game.
      */
@@ -131,7 +132,7 @@ class GameTableScene(private val rootService: RootService) : BoardGameScene(1920
         // Initialize the draw stack and pyramid stack views with card images
         val cardImageLoader = CardImageLoader()
 
-        initializeStackView(pyramide.drawStack.cards,drawStack,cardImageLoader)
+        initializeStackView(pyramide.drawStack.cards, drawStack, cardImageLoader)
         initializeStackView1(pyramide.pyramid, pyramidStack, cardImageLoader)
 
         // Uncomment the following line if there is a reserve stack in the game
@@ -166,7 +167,7 @@ class GameTableScene(private val rootService: RootService) : BoardGameScene(1920
             val cardView = CardView(
                 height = 100,
                 width = 80,
-                front = ImageVisual(cardImageLoader.frontImageFor(card!!.suit, card.value)),
+                front = ImageVisual(cardImageLoader.frontImageFor(card.suit, card.value)),
                 back = ImageVisual(cardImageLoader.backImage)
             )
 
@@ -183,7 +184,7 @@ class GameTableScene(private val rootService: RootService) : BoardGameScene(1920
     /**
      * Initializes the view for a card stack representing a pyramid structure.
      *
-     * @param pyramid The pyramid object containing the card layout information.
+     * @param "pyramid" The pyramid object containing the card layout information.
      * @param stackView The view representing the card stack.
      * @param cardImageLoader The loader for card images.
      */
@@ -240,7 +241,7 @@ class GameTableScene(private val rootService: RootService) : BoardGameScene(1920
         if (clickCounter == 0) {
             // Set the clicked card as the first clicked card and increment the click counter
             firstClickedCard = clickedCard
-                clickCounter++
+            clickCounter++
         }
 
     }
@@ -287,6 +288,7 @@ class GameTableScene(private val rootService: RootService) : BoardGameScene(1920
 
         )
     }
+
     /**
      * Sets the position for a CardView within a stack view and adds it as a component.
      *
@@ -342,41 +344,43 @@ class GameTableScene(private val rootService: RootService) : BoardGameScene(1920
         // Obtain the pyramid layout from the current game
         val pyramid = game.pyramid.cards
         // Check if the removal of the pair is valid
-        if(isValid){
+        if (isValid) {
             // Retrieve the CardView instances corresponding to the removed cards
             val card1 = cardMap.forward(firstClickedCard!!)
-        val card2 = cardMap.forward(secondClickedCard!!)
-        // Remove the CardViews from the parent view
-        card1.removeFromParent()
-        card2.removeFromParent()
-        // Iterate through each row in the pyramid
+            val card2 = cardMap.forward(secondClickedCard!!)
+            // Remove the CardViews from the parent view
+            card1.removeFromParent()
+            card2.removeFromParent()
+            // Iterate through each row in the pyramid
             for (i in pyramid.indices) {
                 // Retrieve the CardView instances corresponding to the first and last cards in the current row
                 val firstCard = cardMap.forward(pyramid[i].first())
                 val lastCard = cardMap.forward(pyramid[i].last())
                 // Show the front of the first and last cards in the row and set click handling
-                firstCard.apply { showFront()
+                firstCard.apply {
+                    showFront()
                     val card = cardMap.backward(this)
                     onMouseClicked = {
-                    if (clickCounter == 0) {
-                        handleFirstCardClick(card)
-                    } else {
-                        handleSecondCardClick(card)
+                        if (clickCounter == 0) {
+                            handleFirstCardClick(card)
+                        } else {
+                            handleSecondCardClick(card)
+                        }
                     }
-                }}
-            lastCard.apply {
-                showFront()
-                val card = cardMap.backward(this)
-                onMouseClicked = {
-                    if (clickCounter == 0) {
-                        handleFirstCardClick(card)
-                    } else {
-                        handleSecondCardClick(card)
+                }
+                lastCard.apply {
+                    showFront()
+                    val card = cardMap.backward(this)
+                    onMouseClicked = {
+                        if (clickCounter == 0) {
+                            handleFirstCardClick(card)
+                        } else {
+                            handleSecondCardClick(card)
+                        }
                     }
                 }
             }
         }
-      }
 
         // Set the clicked cards to null after removal
         firstClickedCard = null
@@ -390,9 +394,9 @@ class GameTableScene(private val rootService: RootService) : BoardGameScene(1920
 
     /**
      * Updates the UI after revealing a card, moving it to the reserve stack.
-    *
-    * @param card The card to be revealed.
-    */
+     *
+     * @param card The card to be revealed.
+     */
     override fun refreshAfterRevealCard(card: Card) {
         // Retrieve the current game from the root service
         val pyramide = rootService.currentGame
@@ -441,6 +445,7 @@ class GameTableScene(private val rootService: RootService) : BoardGameScene(1920
         // Add the card to the target stack view
         toStack.add(cardView)
     }
+
     /**
      * Updates the UI after changing the active player in the game.
      */
@@ -457,6 +462,7 @@ class GameTableScene(private val rootService: RootService) : BoardGameScene(1920
         player2Label.text = "Player 2: ${pyramide.currentPlayer == pyramide.playerList[1]}"
         player2ScoreDisplay.text = "Score: ${pyramide.playerList[1].score}"
     }
+
     /**
      * Updates the UI after flipping revealed cards in the pyramid.
      */
@@ -498,3 +504,4 @@ class GameTableScene(private val rootService: RootService) : BoardGameScene(1920
         }
     }
 }
+

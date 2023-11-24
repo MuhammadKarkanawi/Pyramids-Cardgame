@@ -1,9 +1,8 @@
 package entity
 
 /**
- * represents a game of Pyramide.
+ * represents a game Pyramide.
  */
-
 class Pyramide {
     /**
      * flag indicating whether an opponent passed the previous turn

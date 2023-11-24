@@ -55,11 +55,11 @@ class GameEndMenuScene(private val rootService: RootService) : MenuScene(400, 10
      * @return A string indicating the winner or a draw.
      */
     private fun gameResultString(): String {
-        val p1Score = rootService.gameService.player1.score
-        val p2Score = rootService.gameService.player2.score
+        val p1Score = rootService.currentGame!!.playerList[0].score
+        val p2Score = rootService.currentGame!!.playerList[1].score
         return when {
-            p1Score - p2Score > 0 -> "${rootService.gameService.player1.name} wins the game."
-            p1Score - p2Score < 0 -> "${rootService.gameService.player2.name} wins the game."
+            p1Score - p2Score > 0 -> "${rootService.currentGame!!.playerList[0].name} wins the game."
+            p1Score - p2Score < 0 -> "${rootService.currentGame!!.playerList[1].name} wins the game."
             else -> "Draw. No winner."
         }
     }
@@ -68,12 +68,12 @@ class GameEndMenuScene(private val rootService: RootService) : MenuScene(400, 10
      *
      * Throws an exception if no game is running.
      */
-     fun refreshAfterGameEnd() {
-        val game = rootService.gameService
-        checkNotNull(game) { "No game running" }
+     override fun refreshAfterEndGame() {
+        val pyramide= rootService.currentGame
+        checkNotNull(pyramide) { "No game running" }
 
-        p1Score.text = game.player1.scoreString()
-        p2Score.text = game.player2.scoreString()
+        p1Score.text = pyramide.playerList[0].scoreString()
+        p2Score.text = pyramide.playerList[1].scoreString()
         gameResult.text = gameResultString()
     }
 }

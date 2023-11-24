@@ -8,8 +8,7 @@ enum class CardSuit {
     CLUBS,
     SPADES,
     HEARTS,
-    DIAMONDS,
-    ;
+    DIAMONDS;
 
     /**
      * provide a single character to represent this suit.
@@ -21,6 +20,4 @@ enum class CardSuit {
         HEARTS -> "♥"
         DIAMONDS -> "♦"
     }
-
-
 }

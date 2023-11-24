@@ -21,12 +21,10 @@ class RootService() {
      * Adds the provided [newRefreshable] to all services connected
      * to this root service
      */
-    fun addRefreshable(newRefreshable: Refreshable) {
-        AbstractRefreshingService.addRefreshable(newRefreshable)
-        playerActionService.addRefreshable(newRefreshable)
+   fun addRefreshable(newRefreshable: Refreshable) {
         gameService.addRefreshable(newRefreshable)
+        playerActionService.addRefreshable(newRefreshable)
     }
-
     /**
      * Adds each of the provided [newRefreshables] to all services
      * connected to this root service

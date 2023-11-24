@@ -1,3 +1,4 @@
+package service
 import view.Refreshable
 
 /**
@@ -17,7 +18,6 @@ abstract class AbstractRefreshingService {
     fun addRefreshable(newRefreshable : Refreshable) {
         refreshables += newRefreshable
     }
-
     /**
      * Executes the passed method (usually a lambda) on all
      * [Refreshable]s registered with the service class that
@@ -32,15 +32,7 @@ abstract class AbstractRefreshingService {
      *   refreshPlayerStack(p2, p2.collectedCardsStack)
      * }
      * ```
-     *
      */
     fun onAllRefreshables(method: Refreshable.() -> Unit) =
         refreshables.forEach { it.method() }
-
-    companion object {
-        fun addRefreshable(newRefreshable: Refreshable) {
-
-        }
     }
-
-}
