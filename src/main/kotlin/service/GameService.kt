@@ -59,14 +59,14 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
             pyramide.indexPlayer = 1
 
             rootService.addRefreshables()
-            onAllRefreshables { refreshAfterChangePlayer() }
+            onAllRefreshables {refreshAfterChangePlayer()}
 
             return pyramide.currentPlayer
         } else {
             pyramide.indexPlayer = 0
 
             rootService.addRefreshables()
-            onAllRefreshables { refreshAfterChangePlayer() }
+            onAllRefreshables {refreshAfterChangePlayer()}
 
             return pyramide.currentPlayer
         }
@@ -88,34 +88,6 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
         return (card1.value == CardValue.ACE).xor(card2.value == CardValue.ACE) ||
         sum == 15
     }
-
-    /**
-     * Checks if the pyramid is free from cards.
-     *
-     * @return True if the pyramid is empty, false otherwise.
-     */
-
-
-    /**fun isEmpty(): Boolean {
-        val pyramide = rootService.currentGame
-        checkNotNull(pyramide)
-
-        val pyramidCards = pyramide.pyramid.cards
-
-        checkNotNull(pyramidCards)
-
-        for (row in 0 until 7) {
-            for (col in 0 until row + 1) {
-
-                if (pyramidCards[row][col] != null) {
-                    return false
-                }
-            }
-        }
-        return true
-    }*/
-
-
 
     /**
      * Ends the game and displays the winner.
