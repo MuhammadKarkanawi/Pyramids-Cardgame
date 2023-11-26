@@ -1,9 +1,11 @@
+package service
+
 import entity.*
-import kotlin.test.*
+import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Test
 
 
-
-class TestPyramid {
+/**class TestPyramid {
 
         @Test
         fun creatPyramidCaseOne () {
@@ -13,7 +15,7 @@ class TestPyramid {
             // Zu testende Methode mit Testdaten aufrufen
             val createdPyramid : Pyramid = Pyramid()
 // Test, ob die Werte im neuen Pyramid mit den übergebenen wert übereinstimmt
-            assertEquals (cards, createdPyramid.cards)
+           // assertEquals (cards, createdPyramid.cards)
             assertEquals (7, createdPyramid.cards.size)
 
             /**
@@ -33,3 +35,26 @@ class TestPyramid {
             }
         }
     }
+*/
+
+
+
+class PyramidTest {
+
+    @Test
+    fun testIsEmptyWhenEmpty() {
+        val pyramid = Pyramid()
+
+        assertTrue(pyramid.isEmpty())
+    }
+
+    @Test
+    fun testIsEmptyWhenNotEmpty() {
+        val pyramid = Pyramid()
+
+        // Add a non-empty row to the pyramid
+        pyramid.cards.add(mutableListOf(Card(CardSuit.HEARTS, CardValue.ACE)))
+
+        assertFalse(pyramid.isEmpty())
+    }
+}

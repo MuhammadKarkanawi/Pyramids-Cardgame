@@ -1,6 +1,9 @@
+package service
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
 import entity.Player
-import kotlin.test.*
-class Playertest {
+
+/**class Playertest {
     @Test
     fun creatPlayerCaseOne () {
 // Testdaten erzeugen
@@ -26,5 +29,31 @@ class Playertest {
                 var createdPlayer: Player = Player(playerName)
             }
         }
+    }
+}
+ */
+
+
+
+
+class PlayerTest {
+
+    @Test
+    fun testPlayerInitialization() {
+        val playerName = "Alice"
+        val player = Player(playerName)
+
+        assertEquals(playerName, player.name)
+        assertEquals(0, player.score)
+    }
+
+    @Test
+    fun testScoreIncrement() {
+        val player = Player("Bob")
+
+        // Increment the score
+        player.score += 10
+
+        assertEquals(10, player.score)
     }
 }

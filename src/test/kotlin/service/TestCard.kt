@@ -1,3 +1,5 @@
+package service
+
 import entity.*
 import org.junit.jupiter.api.Test
 import kotlin.test.*
@@ -46,7 +48,7 @@ class CardTest {
     }
 
     /**
-     * Check with a few examples if the order introduced by [WarCard.compareTo] allows
+     * Check with a few examples if the order introduced by [Card.compareTo] allows
      * to directly compare the value of two cards like `card1 > card2`.
      */
     @Test
