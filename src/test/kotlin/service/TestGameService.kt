@@ -3,7 +3,7 @@ import entity.*
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import view.Refreshable
-class GameServiceTest {
+class TestGameService {
 
 
     private fun setUpGame(vararg refreshables: Refreshable): RootService {

@@ -4,7 +4,7 @@ import entity.*
 import org.junit.jupiter.api.Test
 import kotlin.test.*
 
-class CardTest {
+class TestCard {
 
     // Some cards to perform the tests with
     private val aceOfSpades = Card(CardSuit.SPADES, CardValue.ACE)
