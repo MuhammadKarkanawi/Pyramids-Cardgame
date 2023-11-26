@@ -115,7 +115,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
     /**
      * Displays the results of the game.
      */
-    fun showResult() {
+    private fun showResult() {
         println("Player1 :" + player1.score + "Player2:" + player2.score)
     }
 
@@ -125,7 +125,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
      * @param pyramide The pyramid to distribute cards to.
      * @return The updated pyramid.
      */
-    fun distributeCards(pyramide: Pyramide): Pyramide {
+    private fun distributeCards(pyramide: Pyramide): Pyramide {
         // Get a shuffled list of 52 cards
         val cards = defaultRandomCardList()
         // val pyramide = rootService.currentGame
@@ -158,7 +158,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
      */
     private fun createPyramid(cards: List<Card>, pyramide: Pyramide): Pyramide {
         var i = 0
-        var pyramidCards = mutableListOf<MutableList<Card>>()
+        val pyramidCards = mutableListOf<MutableList<Card>>()
 
         for (row in 0 until 7) {
             pyramidCards.add(mutableListOf())

@@ -14,12 +14,12 @@ interface Refreshable {
     fun refreshAfterRemovePair(isValid:Boolean){}
 
     /**
-     * abstract method for refresh after reveal card
+     * abstract method for refresh after reveal card from draw to reserve stack
      */
     fun refreshAfterRevealCard(card:Card){}
 
     /**
-     * abstract method for refresh after flip card from draw stack
+     * abstract method for refresh after flip pyramid cards after removing old ones
      */
    fun refreshAfterFlip(){}
 

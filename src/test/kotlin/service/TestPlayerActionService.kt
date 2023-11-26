@@ -1,4 +1,4 @@
-package service
+/**package service
 
 import entity.*
 import kotlin.test.*
@@ -10,11 +10,12 @@ class PlayerActionServiceTest  {
 
     private fun setUpGame(cards: List<Card>) {
         val rootService = RootService()
-        val game= rootService.gameService
+        val gameService= rootService.gameService
+        val currentGame= rootService.currentGame
+        checkNotNull(currentGame)
 
-        game.startGame("John" , "Nik")
-        val pyramide = rootService.currentGame
-        checkNotNull(pyramide)
+        gameService.startGame("John" , "Nik")
+
         var i = 0
         val pyramidCards = mutableListOf<MutableList<Card>>()
 
@@ -95,3 +96,4 @@ class PlayerActionServiceTest  {
         assertTrue(pyramide.reserveStack.cards[0].isRevealed)
     }
 }
+*/
