@@ -1,4 +1,4 @@
-
+/**package entit
 import kotlin.test.*
 class TestPyramide {
     /**
@@ -98,4 +98,5 @@ class TestPyramide {
             }
     }
 }
-}
+ }
+ */
