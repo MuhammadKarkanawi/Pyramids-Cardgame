@@ -41,8 +41,8 @@ class TestGameService {
         val gameService = rootService.gameService
         assertTrue(refreshableTest.refreshAfterStartGameCalled)
 
-        assertEquals("hi", gameService.player1.name)
-        assertEquals("ho", gameService.player2.name)
+        assertEquals("Alice", gameService.player1.name)
+        assertEquals("Bob", gameService.player2.name)
 
         // Verify that the game pyramid is created and initialized
         assertNotNull(rootService.currentGame)
@@ -194,7 +194,7 @@ class TestGameService {
         fun testRevealCard() {
             val refreshableTest = RefreshableTest()
             rootService.addRefreshable(refreshableTest)
-            rootService.gameService.startGame("hi", "ho")
+            rootService.gameService.startGame("Alice", "Bob")
             val currentGame = rootService.currentGame!!
 
             assertFalse(refreshableTest.refreshAfterRevealCardCalled)

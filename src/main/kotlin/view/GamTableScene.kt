@@ -96,7 +96,7 @@ class GameTableScene(private val rootService: RootService) : BoardGameScene(1920
         player2ScoreDisplay.visual = ColorVisual(Color.WHITE)
 
         // Set background color
-        background = ColorVisual(Color(0, 102, 0)) // Dark Green background
+        background = ColorVisual(Color(90, 200, 100)) // Dark Green background
 
         // Add components to the scene
         addComponents(
