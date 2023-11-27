@@ -162,7 +162,7 @@ class GameService(private val rootService: RootService) : AbstractRefreshingServ
 
         for (row in 0 until 7) {
             pyramidCards.add(mutableListOf())
-            for (col in 0 until row + 1) {
+            for (j in 0 until row + 1) {
                 pyramidCards[row].add(cards[i])
                 i++
             }

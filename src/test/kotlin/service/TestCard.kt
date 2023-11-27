@@ -3,7 +3,9 @@ package service
 import entity.*
 import org.junit.jupiter.api.Test
 import kotlin.test.*
-
+/**
+ * Test class for the Card class.
+ */
 class TestCard {
 
     // Some cards to perform the tests with

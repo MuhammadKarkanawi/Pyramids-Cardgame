@@ -27,8 +27,9 @@ import service.RootService
             }
         }
 
-        // This menu scene is shown after application start and if the "new game" button
-        // is clicked in the gameFinishedMenuScene
+        /** This menu scene is shown after application start and if the "new game" button
+         *is clicked in the gameFinishedMenuScene
+        */
         private val newGameMenuScene = NewGameMenuScene(rootService).apply {
             quitButton.onMouseClicked = {
                 exit()

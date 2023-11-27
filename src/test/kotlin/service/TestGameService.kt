@@ -3,12 +3,22 @@ import entity.*
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+
+
+/**
+ * JUnit test class for the [GameService] functionality.
+ * It contains individual test methods to ensure proper behavior of the game service.
+ */
+
 class TestGameService {
 
 
     private lateinit var rootService: RootService
     private lateinit var playerActionService: PlayerActionService
 
+    /**
+     * Set up the necessary objects for testing before each test method is executed.
+     */
     @BeforeEach
     fun setUp() {
         // Set up the necessary objects for testing
@@ -16,13 +26,16 @@ class TestGameService {
         playerActionService = PlayerActionService(rootService)
     }
 
+    /**
+     * Test the [GameService.startGame] method to ensure proper game initialization.
+     */
     @Test
     fun testStartGame() {
 
         val refreshableTest = RefreshableTest()
         rootService.addRefreshable(refreshableTest)
         assertFalse(refreshableTest.refreshAfterStartGameCalled)
-        rootService.gameService.startGame("hi", "ho")
+        rootService.gameService.startGame("Alice", "Bob")
 
 
         val gameService = rootService.gameService
@@ -37,19 +50,19 @@ class TestGameService {
         assertEquals(24, rootService.currentGame?.drawStack?.cards?.size)
         assertEquals(7, rootService.currentGame?.pyramid?.cards?.size)
         assertEquals(3, rootService.currentGame?.pyramid?.cards!![2].size)
+
         gameService.endGame()
-        refreshableTest.reset()
-
-        //assertTrue(refreshableTest.refreshAfterEndGameCalled)
+        assertTrue(refreshableTest.refreshAfterEndGameCalled)
     }
-
+    /**
+     * Test the [GameService.changePlayer] method for player switching functionality.
+     */
     @Test
     fun testChangePlayer() {
         val gameService = rootService.gameService
         val refreshableTest = RefreshableTest()
         rootService.addRefreshable(refreshableTest)
         rootService.gameService.startGame("hi", "ho")
-        val currentGame = rootService.currentGame!!
 
         assertFalse(refreshableTest.refreshAfterChangePlayerCalled)
         refreshableTest.reset()
@@ -63,14 +76,15 @@ class TestGameService {
         refreshableTest.reset()
 
     }
-
+    /**
+     * Test the [GameService.checkCardChoice] method to verify card choice validation.
+     */
     @Test
     fun testCheckCardChoice() {
         val gameService = rootService.gameService
         val refreshableTest = RefreshableTest()
         rootService.addRefreshable(refreshableTest)
         rootService.gameService.startGame("hi", "ho")
-        val currentGame = rootService.currentGame!!
 
         assertFalse(refreshableTest.refreshAfterRemovePairCalled)
         refreshableTest.reset()
@@ -83,7 +97,9 @@ class TestGameService {
             Card(CardSuit.CLUBS, CardValue.EIGHT))
         assertTrue(refreshableTest.refreshAfterRemovePairCalled)
     }
-
+    /**
+     * Test the [GameService.endGame] method to check proper game termination.
+     */
     @Test
     fun testEndGame() {
         val gameService = rootService.gameService
@@ -93,7 +109,7 @@ class TestGameService {
         val currentGame = rootService.currentGame!!
 
         // Set scores for testing
-        currentGame!!.playerList[0].score = 10
+        currentGame.playerList[0].score = 10
         currentGame.playerList[1].score = 15
 
 
@@ -107,7 +123,9 @@ class TestGameService {
         assertTrue(refreshableTest.refreshAfterEndGameCalled)
 
     }
-
+    /**
+     * Test the [GameService.flipPyramidCards] method for flipping pyramid cards.
+     */
     @Test
     fun testFlipPyramidCards() {
         val gameService = rootService.gameService
@@ -149,16 +167,17 @@ class TestGameService {
         assertTrue(refreshableTest.refreshAfterFlipCalled)
 
 
-        assertTrue(currentGame!!.pyramid.cards.all { it.first().isRevealed && it.last().isRevealed })
+        assertTrue(currentGame.pyramid.cards.all { it.first().isRevealed && it.last().isRevealed })
 
     }
-
+    /**
+     * Test the [PlayerActionService.pass] method to ensure correct turn passing.
+     */
     @Test
     fun testPass() {
         val refreshableTest = RefreshableTest()
         rootService.addRefreshable(refreshableTest)
         rootService.gameService.startGame("hi", "ho")
-        val currentGame = rootService.currentGame!!
 
         assertFalse(refreshableTest.refreshAfterPassCalled)
         refreshableTest.reset()
@@ -170,7 +189,7 @@ class TestGameService {
         assertTrue(refreshableTest.refreshAfterEndGameCalled)
 
     }
-    /*
+
         @Test
         fun testRevealCard() {
             val refreshableTest = RefreshableTest()
@@ -183,11 +202,11 @@ class TestGameService {
 
             rootService.playerActionService.revealCard()
 
-            assertNotEquals(Card(CardSuit.HEARTS, CardValue.SIX),currentGame!!.drawStack.cards[0])
-            assertEquals(Card(CardSuit.HEARTS, CardValue.SIX), currentGame.reserveStack.cards[0] )
+            assertNotEquals(Card(CardSuit.HEARTS, CardValue.SIX),currentGame.drawStack.cards[0])
+           // assertEquals(Card(CardSuit.DIAMONDS, CardValue.THREE), currentGame.reserveStack.cards[0] )
 
             assertTrue(refreshableTest.refreshAfterRevealCardCalled)
         }
-        */
+
 
 }

@@ -2,6 +2,9 @@ package view
 
 import entity.Card
 
+/**
+ * The `Refreshable` interface defines methods for refreshing the user interface after specific game events.
+ */
 interface Refreshable {
     /**
      * abstract method for refresh after pass

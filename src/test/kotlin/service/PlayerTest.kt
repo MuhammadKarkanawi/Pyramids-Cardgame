@@ -4,9 +4,14 @@ import org.junit.jupiter.api.Test
 import entity.Player
 import org.junit.jupiter.api.Assertions.assertNotEquals
 
-
+/**
+ * Test class for the Player class.
+ */
 class PlayerTest {
 
+    /**
+     * Test case to check if player initialization is correct.
+     */
     @Test
     fun testPlayerInitialization() {
         val playerName = "Alice"
@@ -16,6 +21,9 @@ class PlayerTest {
         assertEquals(0, player.score)
     }
 
+    /**
+     * Test case to check if the player's score increments correctly.
+     */
     @Test
     fun testScoreIncrement() {
         val player = Player("Bob")
